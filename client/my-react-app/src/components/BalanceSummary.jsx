@@ -7,7 +7,7 @@ const BalanceSummary = ({ account}) => {
         <div>
             <h2>Total Balance: ${totalBalance.toFixed(2)}</h2>
         </div>
-    )
-}
+    );
+};
 
 export default BalanceSummary;

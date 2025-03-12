@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from "react";
+import {useState } from "react";
 import AccountForm from "./AccountForm";
 
-const AccountList = () => {
-    //state to store accounts
-    const [accounts, setAccounts] = useState([]);
+const AccountList = ({accounts, setAccounts}) => {
+ 
     //track which account is being edited
     const [editingAccount, setEditingAccount] = useState(null);
-
-
-    //fetch accounts from backend when component loads
-    useEffect(() => {
-        fetch("")
-        .then((res) => res.json())
-        .then((data) => setAccounts(data));
-    }, []);
     
     //handle account deletion
     const handleDelete = async (id) => {
