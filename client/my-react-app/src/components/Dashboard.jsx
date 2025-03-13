@@ -1,29 +1,24 @@
 import { useState, useEffect } from "react";
-import AccountList from "./AccountList";
-import BalanceSummary from "./BalanceSummary";
+import AccountList from "../components/AccountList";
+import BalanceSummary from "../components/BalanceSummary";
 
 const Dashboard = () => {
-    const[accounts, setAccounts] = useState([]);
-    //fetch accounts from API
-    const fetchAccounts = async () => {
-        const res = await fetch("http://");
-        const data = await res.json();
-        setAccounts(data);
-    };
+  const [accounts, setAccounts] = useState([]);
 
-    //fetch accounts from API when component mounts
-    useEffect(() => {
-        fetchAccounts();
-    }, []);
-    return (
-        <div>
-            <h1>Dashboard</h1>
-            {/*Show total balance */}
-            <BalanceSummary accounts={accounts} />
+  useEffect(() => {
+    fetch("http://localhost:4000/api/accounts")
+      .then((res) => res.json())
+      .then((data) => setAccounts(data))
+      .catch((err) => console.error("Error fetching accounts:", err));
+  }, []);
 
-            {/*Display list of accounts */}
-            <AccountList accounts={accounts} setAccounts={setAccounts} />
-        </div>
-    );
-}
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <BalanceSummary accounts={accounts} />
+      <AccountList />
+    </div>
+  );
+};
+
 export default Dashboard;

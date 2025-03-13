@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-const AccountForm = ({ onsubmit, existingAccount }) => {
+
+const AccountForm = ({ onSubmit, existingAccount }) => {
   //initialize form state with existing account data always if available
   const [name, setName] = useState(existingAccount?.name || "");
   const [type, setType] = useState(existingAccount?.type || "Bank");
