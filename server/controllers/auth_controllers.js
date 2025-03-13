@@ -28,7 +28,6 @@ res.status(500).json({ message: "Error signing up", error });
 };
 
 // Login Controller
-// Login Controller
 const login = async (req, res) => {
   console.log("Login function hit"); // Add this line to track
   const { email, password } = req.body;
@@ -50,5 +49,17 @@ const login = async (req, res) => {
       res.status(500).json({ message: "Error logging in", error });
     }
   };
+
+  const logout = (req, res) => {
+    try {
+      res.clearCookie("token", {httpOnly: true, secure: true, sameSite: "Strict"});
+      res.status(200).json({ message: "User successfully logged out"});
+     } catch (error) {
+    console.log("Logout error:", error);
+    res.status(500).json({ message: "Error logginout", error });
+     }
+  };
+
+ 
   
-module.exports = { signup, login };
+module.exports = { signup, login, logout };
