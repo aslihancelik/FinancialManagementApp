@@ -34,6 +34,9 @@ const {
 } = require("../controllers/account_controllers");
 const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 
+// Apply mock authentication middleware to all routes
+// router.use(mockAuthMiddleware);
+
 // Get all accounts for a user
 // http://localhost:3000/api/accounts
 router.get("/accounts", mockAuthMiddleware, getAccounts);
@@ -41,22 +44,36 @@ router.get("/accounts", mockAuthMiddleware, getAccounts);
 // Link an existing account
 // http://localhost:3000/api/accounts
 
-// {
-//   "name": "Savings",
-//   "type": "bank account",
-//   "balance": 1000,
-//   "bankAccount": "12345"
-// }
+/* {
+  "name": "My Bank Account",
+  "type": "bank account",
+  "balance": 10000,
+  "bankAccount": {
+    "routingNumber": "110000000",
+    "accountNumber": "123456789"
+  }
+} */
+
+/* {
+  "name": "My Card",
+  "type": "credit card",
+  "balance": 3000,
+  "creditCard": {
+    "number": "110000000",
+    "expDate": "12/20/2024",
+    "cvc": 333
+  }
+} */
 
 
 router.post("/accounts", mockAuthMiddleware, linkAccount);
 
 // Get a single account by ID
-// http:localhost:3000/api/accounts/<account_id>
+// http://localhost:3000/api/accounts/<account_id>
 router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
 
 // Update an existing account
-// http:localhost:3000/api/accounts/<account_id>
+// http://localhost:3000/api/accounts/<account_id>
 router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
 
 module.exports = router;
