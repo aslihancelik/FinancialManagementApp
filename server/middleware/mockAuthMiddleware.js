@@ -1,4 +1,6 @@
 // mockAuthMiddleware.js
+// This is a middleware to bypass the authentication of the user until the accounts is merged to the authentication feature of the project
+
 const mockAuthMiddleware = (req, res, next) => {
   // Simulate a logged-in user by adding a user object to the request
   req.user = {
