@@ -2,11 +2,10 @@ This version of the accounts feature implements all the endpoints needed for the
 
 In order to use this branch for testing the front end:
 
-1. Connect to the database.
-2. run `node seedUser.js` on terminal to create the user on the database
-3. change the id on mockAuthMiddleware.js line 7 with the user id generated for the created user in the database. This will bypass the authentication step and you can continue with using the endpoints.
-4. run `npm run dev` on terminal
-5. use the endpoints. the urls and json data for endpoints are provided in the account_routes.js file above each route as a comment.
+1. run `node seedUser.js` on terminal to create the user on the database
+2. change the id on mockAuthMiddleware.js line 7 with the user id generated for the created user in the database. This will bypass the authentication step and you can continue with using the endpoints.
+3. run `npm run dev` on terminal
+4. use the endpoints. the urls and json data for endpoints are provided in the account_routes.js file above each route as a comment.
 
 What to do next:
 
