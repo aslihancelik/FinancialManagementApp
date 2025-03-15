@@ -1,6 +1,5 @@
 const Account = require("../models/account_models");
-// const mockUser = require("../middleware/mockAuthMiddleware");
-// const mockUser = "67d35bc0a50f98b491e7e002";
+
 // Get all accounts for a user
 exports.getAccounts = async (req, res) => {
   try {
