@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+const User = require("./user"); // Import the User model
 
 const AccountSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId, //String,
       ref: "User",
       required: true,
     },
@@ -58,4 +59,4 @@ const AccountSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.export = mongoose.model("Account", AccountSchema);
+module.exports = mongoose.model("Account", AccountSchema);
