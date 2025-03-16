@@ -1,19 +1,46 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 const AccountForm = ({ onSubmit, existingAccount }) => {
-  //initialize form state with existing account data always if available
-  const [name, setName] = useState(existingAccount?.name || "");
-  const [type, setType] = useState(existingAccount?.type || "Bank");
-  const [balance, setBalance] = useState(existingAccount?.balance || "");
+  //state to manage form fileds
+  const [name, setName] = useState("");
+  const [type, setType] = useState("bank account");
+  const [balance, setBalance] = useState(0);
+  const [creditCard, setCreditCard] = useState({number: "", expDate: "", cvc:""});
+  const [bankAccount, setBankAccount] = useState({routingNumber: "", accountNumber: ""});
 
-  //handle form submission
+  //let's load existing account data into form if editing an account
+useEffect(() =>{
+  if(existingAccount) {
+    setName(existingAccount.name);
+    setType(existingAccount.type);
+    setBalance(existingAccount.balance);
+    //here we are setting specific account type details if available
+    if(existingAccount.type === "credit-card") {
+      setCreditCard(existingAccount.creditCard || { number: "", expDate: "", cvc: ""});
+    } else {
+      setBankAccount(existingAccount.bankAccount || { routingNumber: "", accountNumber: ""});
+    }
+  }
+}, [existingAccount]);
+  
+//handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    onsubmit({ name, type, balance: parseFloat(balance) }); //try to convert balance to a number
+    const accountData = { name, type, balance: parseFloat(balance) }; //try to convert balance to a number
+  
+    //include specific fields based on account type
+    if(type === "credit card") {
+      accountData.creditCard = creditCard;
+    } else {
+      accountData.bankAccount = bankAccount
+    }
+    //pass data to parent component
+    onSubmit(accountData);
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {/*input for account name */}
       <input
         type="text"
         placeholder="Account Name"
@@ -21,10 +48,12 @@ const AccountForm = ({ onSubmit, existingAccount }) => {
         onChange={(e) => setName(e.target.value)}
         required
       />
+      {/* dropdown for selecting account type */}
       <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="Bank">Bank</option>
-        <option value=" Credit Card">Credit Card</option>
+        <option value="bank account">Bank Account</option>
+        <option value=" credit card">Credit Card</option>
       </select>
+      {/*input for balance */}
       <input
         type="number"
         placeholder="Balance"
@@ -32,8 +61,65 @@ const AccountForm = ({ onSubmit, existingAccount }) => {
         onChange={(e) => setBalance(e.target.value)}
         required
       />
+      {/*input for credit card detail(only if selected) */}
+      {type === " credit card" && (
+        <>
+          <input
+            type="text"
+            placeholder="Card Number"
+            value={creditCard.number}
+            onChange={(e) =>
+              setCreditCard({ ...creditCard, number: e.target.value })
+            }
+            required
+          />
+
+          <input
+            type="text"
+            placeholder="Expiration Date (MM/YY)"
+            value={creditCard.expDate}
+            onChange={(e) =>
+              setCreditCard({ ...creditCard, expDate: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="CVC"
+            value={creditCard.cvc}
+            onChange={(e) =>
+              setCreditCard({ ...creditCard, cvc: e.target.value })
+            }
+            required
+          />
+        </>
+      )}
+      {/* inputs for bank account details(only if selected*/}
+      {type === "bank account" && (
+        <>
+          <input
+            type="text"
+            placeholder="Routing Number"
+            value={bankAccount.routingNumber}
+            onChange={(e) =>
+              setBankAccount({ ...bankAccount, routingNumber: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Account Number"
+            value={bankAccount.accountNumber}
+            onChange={(e) =>
+              setBankAccount({ ...bankAccount, accountNumber: e.target.value })
+            }
+            required
+          />
+        </>
+      )}
+      {/* submit button*/}
       <button type="submit">
-        {existingAccount ? "Update" : "Add"} Account{" "}
+        {existingAccount ? "Update" : "Add"} Account
       </button>
     </form>
   );
