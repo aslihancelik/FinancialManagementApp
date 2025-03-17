@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 
 const AccountForm = ({ onSubmit, existingAccount }) => {
-  //state to manage form fileds
+  //state to manage form fields
   const [name, setName] = useState("");
   const [type, setType] = useState("bank account");
   const [balance, setBalance] = useState(0);
@@ -15,19 +15,27 @@ useEffect(() =>{
     setType(existingAccount.type);
     setBalance(existingAccount.balance);
     //here we are setting specific account type details if available
-    if(existingAccount.type === "credit-card") {
+    if(existingAccount.type === "credit card") {
       setCreditCard(existingAccount.creditCard || { number: "", expDate: "", cvc: ""});
     } else {
       setBankAccount(existingAccount.bankAccount || { routingNumber: "", accountNumber: ""});
     }
   }
 }, [existingAccount]);
+
+//reset account-specific fields when type changes
+useEffect(() => {
+  if (type === "credit card") {
+    setBankAccount({routingNumber: "", accountNumber: ""});
+  } else {
+    setCreditCard({ number: "", expDate: "", cvc: ""});
+  }
+}, [type]);
   
 //handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const accountData = { name, type, balance: parseFloat(balance) }; //try to convert balance to a number
-  
+    const accountData = { name, type, balance}; 
     //include specific fields based on account type
     if(type === "credit card") {
       accountData.creditCard = creditCard;
@@ -58,7 +66,7 @@ useEffect(() =>{
         type="number"
         placeholder="Balance"
         value={balance}
-        onChange={(e) => setBalance(e.target.value)}
+        onChange={(e) => setBalance(parseFloat(e.target.value) || 0)}
         required
       />
       {/*input for credit card detail(only if selected) */}
@@ -84,7 +92,7 @@ useEffect(() =>{
             required
           />
           <input
-            type="text"
+            type="number"
             placeholder="CVC"
             value={creditCard.cvc}
             onChange={(e) =>
