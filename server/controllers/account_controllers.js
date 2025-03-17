@@ -1,4 +1,5 @@
 const Account = require("../models/account_models");
+const plaidClient = require("../plaidConfig");
 
 // Get all accounts for a user
 exports.getAccounts = async (req, res) => {

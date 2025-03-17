@@ -55,6 +55,10 @@ const AccountSchema = new mongoose.Schema(
         },
       },
     },
+    plaid: {
+      accessToken: String, //Plaid access token
+      itemId: String, //Plaid item ID
+    },
   },
   { timestamps: true }
 );
