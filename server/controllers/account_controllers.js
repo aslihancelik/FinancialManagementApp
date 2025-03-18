@@ -5,7 +5,7 @@ const plaidClient = require("../plaidConfig");   // Import the plaidClient confi
 // Generate a new Plaid link token
 exports.createLinkToken = async (req, res) => {
   try {
-    const response = await plaidClient.linkToken.create({
+    const response = await plaidClient.linkTokenCreate({
       user: { client_user_id: req.user.id }, // unique user ID from your app
       client_name: "Your App Name", // The name of your app
       products: ["auth", "transactions"], // Products you're using from Plaid
@@ -14,10 +14,15 @@ exports.createLinkToken = async (req, res) => {
     });
 
     // Send the link token back to the client
-    res.json({ link_token: response.link_token });
+    res.json({ link_token: response.data.link_token });
   } catch (error) {
     console.error("Error creating link token:", error);
-    res.status(500).json({ message: "Server error" });
+    res
+      .status(500)
+      .json({
+        message: "Server error",
+        error: error.response ? error.response.data : error.message,
+      });
   }
 };
 
@@ -28,12 +33,17 @@ exports.linkAccount = async (req, res) => {
 
   try {
     // Exchange the public token from front-end for an access token using Plaid API
-    const response = await plaidClient.linkToken.exchange({
+    const tokenResponse = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
     });
 
-    const accessToken = response.access_token; //token used to make further API requests 
-    const itemId = response.item_id; //A unique identifier for the account link between your app and Plaid.
+    const accessToken = tokenResponse.data.access_token; //token used to make further API requests
+    const itemId = tokenResponse.data.item_id; //A unique identifier for the account link between your app and Plaid.
+
+    // Step 2: Validate account using routing and account numbers
+    const authResponse = await plaidClient.authGet({
+      access_token: accessToken,
+    });
 
     // Now, create the account with Plaid details
     const newAccount = new Account({
