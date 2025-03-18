@@ -9,7 +9,7 @@ const cors = require("cors");
 
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 //middleware to parse incoming JSON requests
 app.use(bodyParser.json());
@@ -17,6 +17,18 @@ app.use(bodyParser.json());
 //use the transaction routes
 app.use("/api", transactionRoutes);
 
+
+//connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/financialApp", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => {
+    console.log("connected to MongoDB");
+})
+.catch((error) => {
+    console.log("error connecting to MongoDB", error);
+});
 //start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
