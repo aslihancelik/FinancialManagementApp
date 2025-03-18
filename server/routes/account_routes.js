@@ -21,9 +21,6 @@
 
 // module.exports = router;
 
-
-
-
 const express = require("express");
 const router = express.Router();
 const plaidClient = require("../plaidConfig");
@@ -32,15 +29,16 @@ const {
   linkAccount,
   getAccountById,
   updateAccount,
+  createLinkToken,
 } = require("../controllers/account_controllers");
 const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 
 // Apply mock authentication middleware to all routes
 // router.use(mockAuthMiddleware);
 
-// Get all accounts for a user
-// http://localhost:3000/api/accounts
-router.get("/accounts", mockAuthMiddleware, getAccounts);
+// Route to generate a Plaid link token
+// http://localhost:3000/api/create_link_token
+router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
 
 // Link an existing account
 // http://localhost:3000/api/accounts
@@ -66,8 +64,11 @@ router.get("/accounts", mockAuthMiddleware, getAccounts);
   }
 } */
 
-
 router.post("/accounts", mockAuthMiddleware, linkAccount);
+
+// Get all accounts for a user
+// http://localhost:3000/api/accounts
+router.get("/accounts", mockAuthMiddleware, getAccounts);
 
 // Get a single account by ID
 // http://localhost:3000/api/accounts/<account_id>
