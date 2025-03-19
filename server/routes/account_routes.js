@@ -1,35 +1,12 @@
-// const express = require("express");
-// const router = express.Router();
-// const {
-//   getAccounts,
-//   linkAccount,
-//   getAccountById,
-//   updateAccount,
-// } = require("../controllers/account_controllers");
-
-// // Get all accounts for a user
-// router.get("/accounts", getAccounts);
-
-// // Link an existing account
-// router.post("/accounts", linkAccount);
-
-// // Get a single account by ID
-// router.get("/accounts/:id", getAccountById);
-
-// // Update an existing account
-// router.put("/accounts/:id", updateAccount);
-
-// module.exports = router;
-
 const express = require("express");
 const router = express.Router();
-const plaidClient = require("../plaidConfig");
 const {
+  createLinkToken,
+  linkBankAccount,
+  linkCreditCard,
   getAccounts,
-  linkAccount,
   getAccountById,
   updateAccount,
-  createLinkToken,
 } = require("../controllers/account_controllers");
 const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 
@@ -40,8 +17,8 @@ const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 // http://localhost:3000/api/create_link_token
 router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
 
-// Link an existing account
-// http://localhost:3000/api/accounts
+// Link a bank account
+// http://localhost:3000/api/accounts/bank
 
 /* {
   "name": "My Bank Account",
@@ -52,6 +29,11 @@ router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
     "accountNumber": "123456789"
   }
 } */
+
+router.post("/accounts/bank", mockAuthMiddleware, linkBankAccount);
+
+// Link a credit card
+// http://localhost:3000/api/accounts/credit-card
 
 /* {
   "name": "My Card",
@@ -64,7 +46,7 @@ router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
   }
 } */
 
-router.post("/accounts", mockAuthMiddleware, linkAccount);
+router.post("/accounts/credit-card", mockAuthMiddleware, linkCreditCard);
 
 // Get all accounts for a user
 // http://localhost:3000/api/accounts

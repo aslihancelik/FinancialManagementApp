@@ -42,22 +42,12 @@ const AccountSchema = new mongoose.Schema(
       },
     },
     bankAccount: {
-      routingNumber: {
-        type: String,
-        required: function () {
-          return this.type === "bank account";
-        },
-      },
-      accountNumber: {
-        type: String,
-        required: function () {
-          return this.type === "bank account";
-        },
-      },
+      routingNumber: { type: String, required: true }, // Encrypted string
+      accountNumber: { type: String, required: true }, // Encrypted string
     },
     plaid: {
-      accessToken: String, //Plaid access token
-      itemId: String, //Plaid item ID
+      accessToken: { type: String, required: true }, //Plaid access token
+      itemId: { type: String, required: true }, //Plaid item ID
     },
   },
   { timestamps: true }
