@@ -1,16 +1,34 @@
 const mongoose = require("mongoose");
 
-const GoalSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  title: { type: String, required: true },
-  targetAmount: { type: Number, required: true },
-  currentAmount: { type: Number, default: 0 },
-  account: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Account",
-    required: false,
+const goalSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    targetAmount: {
+      type: Number,
+      required: true,
+    },
+    savedAmount: {
+      type: Number,
+      default: 0,
+    },
+    deadline: {
+      type: Date,
+      required: true,
+    },
+    account: {
+      type: String, // Optional: Link goal to a specific account
+      default: null,
+    },
   },
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Goal", GoalSchema);
+module.exports = mongoose.model("Goal", goalSchema);

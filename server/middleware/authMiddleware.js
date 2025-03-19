@@ -6,12 +6,15 @@ exports.protect = async (req, res, next) => {
   try {
     let token;
 
-    // ✅ Extract Bearer Token from Authorization Header
+    // ✅ Check if Authorization header exists
+    console.log("Authorization Header:", req.headers.authorization);
+
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+      console.log("Extracted Token:", token); // ✅ Log extracted token
     }
 
     if (!token) {
@@ -22,9 +25,12 @@ exports.protect = async (req, res, next) => {
 
     // ✅ Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded Token:", decoded); // ✅ Log decoded token
 
     // ✅ Check if User Exists in Database
     const user = await User.findById(decoded.id).select("-password");
+    console.log("Authenticated User:", user); // ✅ Log authenticated user
+
     if (!user) {
       return res
         .status(401)

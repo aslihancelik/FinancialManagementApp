@@ -16,12 +16,21 @@ const PORT = process.env.PORT || 3000;
 // ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true })); // Enables form data parsing
 app.use(
   cors({
     origin: "http://localhost:5174", // Allow frontend requests
     credentials: true,
   })
 );
+// ✅ Only use JSON parser for non-DELETE requests
+app.use((req, res, next) => {
+  if (req.method !== "DELETE") {
+    bodyParser.json()(req, res, next);
+  } else {
+    next();
+  }
+});
 
 // ✅ API Routes
 app.use("/api/auth", authRoutes); // ✅ Authentication Routes

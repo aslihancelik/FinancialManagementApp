@@ -3,13 +3,17 @@ const {
   createGoal,
   getGoals,
   updateGoal,
-} = require("../Controllers/goalControllers"); // Import controller functions
-const { protect } = require("../middleware/authMiddleware"); // Ensure authentication middleware is used
+  getGoalProgress, 
+  deleteGoal,
+} = require("../Controllers/goalControllers");//  Import goal controllers 
+const { protect } = require("../middleware/authMiddleware"); // Import the protect middleware
 
-const router = express.Router();
+const router = express.Router(); // ✅ Goal Routes
 
-router.post("/", protect, createGoal); // ✅ Ensure user is authenticated
-router.get("/", protect, getGoals); // ✅ Get all goals
-router.put("/:id", protect, updateGoal); // ✅ Update savings progress
+router.post("/", protect, createGoal); // ✅ Create a goal
+router.get("/", protect, getGoals); // ✅ Fetch user's goals
+router.put("/:id", protect, updateGoal);// ✅ Update goal progress
+router.get("/:id/progress", protect, getGoalProgress);// ✅ Get goal progress
+router.delete("/:id", protect, deleteGoal); // ✅ Delete a goal
 
 module.exports = router;
