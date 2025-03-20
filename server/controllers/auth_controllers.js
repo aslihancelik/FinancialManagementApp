@@ -50,6 +50,7 @@ const login = async (req, res) => {
     }
   };
 
+  //logout
   const logout = (req, res) => {
     try {
       res.clearCookie("token", {httpOnly: true, secure: true, sameSite: "Strict"});
@@ -60,6 +61,40 @@ const login = async (req, res) => {
      }
   };
 
+    const updateUser = async (req, res) => {
+      console.log("Update function hit"); // Debugging log
+    
+      try {
+        const { userId } = req.params; // Get user ID from URL params
+        const { firstName, lastName, email, password } = req.body; // Data from request body
+    
+        // Find the user by ID
+        let user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+    
+        // Prepare an update object
+        const updates = {};
+        if (firstName) updates.firstName = firstName;
+        if (lastName) updates.lastName = lastName;
+        if (email) updates.email = email;
+    
+        // If password is being updated, hash the new password
+        if (password) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          updates.password = hashedPassword;
+        }
+    
+        // Update the user in the database
+        user = await User.findByIdAndUpdate(userId, updates, { new: true });
+    
+        res.status(200).json({ message: "User updated successfully", user });
+      } catch (error) {
+        console.error("Update error:", error);
+        res.status(500).json({ message: "Error updating user", error });
+      }
+    };
+    
+
  
   
-module.exports = { signup, login, logout };
+module.exports = { signup, login, logout, updateUser };

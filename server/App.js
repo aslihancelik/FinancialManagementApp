@@ -19,7 +19,10 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Import Routes
 const authRoutes = require("./routes/auth_routes");
+const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
+
 app.use("/auth", authRoutes);
+app.use("/bills", createBillRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
