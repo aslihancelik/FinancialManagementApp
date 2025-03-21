@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../../api/auth"; // ✅ Correct API function
+import { signup } from "../../api/auth"; // Correct API function
 
 const Signup = () => {
-  // ✅ Component name matches file name
+  // Updated state to include firstName and lastName
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "", // Added firstName
+    lastName: "", // Added lastName
     email: "",
     password: "",
     confirmPassword: "",
@@ -20,7 +21,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Input validation
+    // Input validation
     if (!formData.email.includes("@")) {
       setError("Invalid email format");
       return;
@@ -33,9 +34,13 @@ const Signup = () => {
       setError("Passwords do not match");
       return;
     }
+    if (!formData.firstName || !formData.lastName) {
+      setError("First name and last name are required");
+      return;
+    }
 
     try {
-      await signup(formData); // ✅ Calls the correct function
+      await signup(formData); // Calls the correct function
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
@@ -47,10 +52,20 @@ const Signup = () => {
       <h2>Sign Up</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
+        {/* Added fields for firstName and lastName */}
         <input
           type="text"
-          name="name"
-          placeholder="Name"
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
           onChange={handleChange}
           required
         />
@@ -58,6 +73,7 @@ const Signup = () => {
           type="email"
           name="email"
           placeholder="Email"
+          value={formData.email}
           onChange={handleChange}
           required
         />
@@ -65,6 +81,7 @@ const Signup = () => {
           type="password"
           name="password"
           placeholder="Password"
+          value={formData.password}
           onChange={handleChange}
           required
         />
@@ -72,6 +89,7 @@ const Signup = () => {
           type="password"
           name="confirmPassword"
           placeholder="Confirm Password"
+          value={formData.confirmPassword}
           onChange={handleChange}
           required
         />
@@ -81,4 +99,4 @@ const Signup = () => {
   );
 };
 
-export default Signup; // ✅ Component name matches file name
+export default Signup;

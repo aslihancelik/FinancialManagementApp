@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup
   const [formData, setFormData] = useState({
+    firstName: "", // Updated to firstName
+    lastName: "", // Updated to lastName
     email: "",
     password: "",
-    name: "", // ✅ Changed 'username' to 'name' to match backend
     confirmPassword: "",
   });
   const { setUser } = useAuth();
@@ -23,9 +24,11 @@ const AuthPage = () => {
       return "Email and password are required.";
     if (
       !isLogin &&
-      (!formData.name || formData.password !== formData.confirmPassword)
+      (!formData.firstName ||
+        !formData.lastName ||
+        formData.password !== formData.confirmPassword)
     )
-      return "Passwords do not match or name is missing.";
+      return "First Name, Last Name, and passwords must be filled out correctly.";
     return null;
   };
 
@@ -46,23 +49,25 @@ const AuthPage = () => {
         });
       } else {
         response = await signup({
-          name: formData.name, // ✅ Change 'username' to 'name' to match backend
+          firstName: formData.firstName, // Send firstName to the backend
+          lastName: formData.lastName, // Send lastName to the backend
           email: formData.email,
           password: formData.password,
         });
       }
 
-      // ✅ Fix: Ensure token is stored properly
+      // Ensure token is stored properly
       if (response.token) {
         localStorage.setItem("authToken", response.token);
       } else {
         throw new Error("Token not received from server.");
       }
 
-      // ✅ Fix: Store user details correctly
+      // Store user details correctly
       setUser({
         id: response.id,
-        name: response.name,
+        firstName: response.firstName, // Ensure firstName is stored
+        lastName: response.lastName, // Ensure lastName is stored
         email: response.email,
       });
 
@@ -78,14 +83,24 @@ const AuthPage = () => {
       <h2>{isLogin ? "Login" : "Sign Up"}</h2>
       <form onSubmit={handleSubmit}>
         {!isLogin && (
-          <input
-            type="text"
-            name="name"
-            placeholder="Name" // ✅ Change 'Username' to 'Name' to match backend
-            value={formData.name}
-            onChange={handleChange}
-            required={!isLogin}
-          />
+          <>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={handleChange}
+              required={!isLogin}
+            />
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={handleChange}
+              required={!isLogin}
+            />
+          </>
         )}
         <input
           type="email"
@@ -103,7 +118,7 @@ const AuthPage = () => {
           onChange={handleChange}
           required
         />
-        {/* ✅ Added Confirm Password Field for Signup */}
+        {/* Added Confirm Password Field for Signup */}
         {!isLogin && (
           <input
             type="password"
