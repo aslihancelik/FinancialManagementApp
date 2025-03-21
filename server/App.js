@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const goalRoutes = require("./routes/goalroutes");
 const authRoutes = require("./routes/authRoutes");
+const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
 
 // Load environment variables
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(
 // ✅ API Routes
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/goals", goalRoutes); // Goals routes
+app.use("/bills", createBillRoutes);
 
 // ✅ Test route
 app.get("/", (req, res) => {
