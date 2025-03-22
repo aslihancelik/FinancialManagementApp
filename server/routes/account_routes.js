@@ -1,45 +1,22 @@
-// const express = require("express");
-// const router = express.Router();
-// const {
-//   getAccounts,
-//   linkAccount,
-//   getAccountById,
-//   updateAccount,
-// } = require("../controllers/account_controllers");
-
-// // Get all accounts for a user
-// router.get("/accounts", getAccounts);
-
-// // Link an existing account
-// router.post("/accounts", linkAccount);
-
-// // Get a single account by ID
-// router.get("/accounts/:id", getAccountById);
-
-// // Update an existing account
-// router.put("/accounts/:id", updateAccount);
-
-// module.exports = router;
-
-
-
-
 const express = require("express");
+
 const router = express.Router();
+const protect = require("../middleware/authMiddleware"); // Import 
 const {
   getAccounts,
   linkAccount,
   getAccountById,
   updateAccount,
 } = require("../controllers/account_controllers");
-const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
+// const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 
 // Apply mock authentication middleware to all routes
 // router.use(mockAuthMiddleware);
 
 // Get all accounts for a user
 // http://localhost:3000/api/accounts
-router.get("/accounts", mockAuthMiddleware, getAccounts);
+// router.get("/accounts", mockAuthMiddleware, getAccounts);
+router.get("/accounts", protect, getAccounts);
 
 // Link an existing account
 // http://localhost:3000/api/accounts
@@ -66,14 +43,17 @@ router.get("/accounts", mockAuthMiddleware, getAccounts);
 } */
 
 
-router.post("/accounts", mockAuthMiddleware, linkAccount);
+// router.post("/accounts", mockAuthMiddleware, linkAccount);
+router.post("/accounts", protect, linkAccount);
 
 // Get a single account by ID
 // http://localhost:3000/api/accounts/<account_id>
-router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
+// router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
+router.get("/accounts/:id", protect, getAccountById);
 
 // Update an existing account
 // http://localhost:3000/api/accounts/<account_id>
-router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
+// router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
+router.put("/accounts/:id", protect, updateAccount);
 
 module.exports = router;

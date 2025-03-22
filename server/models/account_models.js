@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const User = require("./user"); // Import the User model
 
 const AccountSchema = new mongoose.Schema(
@@ -58,5 +59,24 @@ const AccountSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Encrypt sensitive data before saving to the database
+AccountSchema.pre("save", async function (next) {
+  // Encrypt credit card number if it has been modified
+  if (this.isModified("creditCard.number")) {
+    this.creditCard.number = await bcrypt.hash(this.creditCard.number, 10);
+  }
+
+  // Encrypt bank account number if it has been modified
+  if (this.isModified("bankAccount.accountNumber")) {
+    this.bankAccount.accountNumber = await bcrypt.hash(
+      this.bankAccount.accountNumber,
+      10
+    );
+  }
+
+  next(); // Proceed to save the document
+});
+
 
 module.exports = mongoose.model("Account", AccountSchema);
