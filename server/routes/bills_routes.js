@@ -2,7 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const { getBills, addBill, updateBill, deleteBill } = require('../controllers/bills_controllers');
-const authenticateUser = require('../middleware/authenticate');  // Import the authentication middleware
+const authenticateUser = require('../middleware/authMiddleware');  // Import the authentication middleware
+ 
+console.log("✅ authenticateUser type:", typeof authenticateUser); // 👀 This should be "function"
 
 // Route to get all bills for the authenticated user
 router.get('/', authenticateUser, getBills); //http://localhost:3000/bills get ALL bills, empty body and select none, it lists all created bills

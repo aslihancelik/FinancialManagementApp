@@ -32,7 +32,7 @@ exports.createGoal = async (req, res) => {
 };
 
 // ✅ Fetch User's Goals (GET /api/goals)
-exports.getGoals = async (req, res) => {
+exports.getGoalsById = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized: No user ID" });
@@ -59,6 +59,14 @@ exports.updateGoal = async (req, res) => {
     // ✅ Validate ObjectId before querying MongoDB
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid Goal ID format" });
+    }
+
+    // ✅ Ensure savedAmount is a number
+    const parsedAmount = parseFloat(savedAmount);
+    if (isNaN(parsedAmount)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid savedAmount: must be a number" });
     }
 
     const goal = await Goal.findById(id);

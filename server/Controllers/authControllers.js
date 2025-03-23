@@ -9,10 +9,10 @@ const generateToken = (res, id) => {
 
   // ✅ Set JWT as HttpOnly Cookie
   res.cookie("jwt", token, {
-    httpOnly: true, // Prevents access from JavaScript (more secure)
-    secure: process.env.NODE_ENV === "production", // Secure in production
-    sameSite: "strict", // Prevents CSRF attacks
-    maxAge: 30 * 24 * 60 * 60 * 1000, // Expires in 30 days
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
   return token;
@@ -21,9 +21,9 @@ const generateToken = (res, id) => {
 // ✅ Register User (Signup)
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -32,24 +32,24 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // ✅ Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Create User
     const user = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     });
 
     if (user) {
-      const token = generateToken(res, user._id); // ✅ Set JWT cookie
+      const token = generateToken(res, user._id);
 
       res.status(201).json({
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
-        token, // ✅ Send token in response (for frontend storage)
+        token,
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });
@@ -73,15 +73,15 @@ exports.loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    // ✅ Compare Passwords
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = generateToken(res, user._id); // ✅ Set JWT cookie
+      const token = generateToken(res, user._id);
 
       res.status(200).json({
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
-        token, // ✅ Send token in response
+        token,
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
@@ -101,7 +101,8 @@ exports.getUserProfile = async (req, res) => {
 
     res.status(200).json({
       id: req.user._id,
-      name: req.user.name,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
       email: req.user.email,
     });
   } catch (error) {
@@ -118,3 +119,36 @@ exports.logoutUser = (req, res) => {
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+// update user profile
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update only the fields provided
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      id: updatedUser._id,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      email: updatedUser.email,
+    });
+  } catch (error) {
+    console.error("Update User Profile Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
