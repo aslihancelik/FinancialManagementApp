@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const protect = require("../middleware/authMiddleware"); // Import 
+const authMiddleware = require("../middleware/authMiddleware"); // Import 
 const {
   getAccounts,
   linkAccount,
@@ -16,7 +16,7 @@ const {
 // Get all accounts for a user
 // http://localhost:3000/api/accounts
 // router.get("/accounts", mockAuthMiddleware, getAccounts);
-router.get("/accounts", protect, getAccounts);
+router.get("/accounts", authMiddleware, getAccounts);
 
 // Link an existing account
 // http://localhost:3000/api/accounts
@@ -44,16 +44,16 @@ router.get("/accounts", protect, getAccounts);
 
 
 // router.post("/accounts", mockAuthMiddleware, linkAccount);
-router.post("/accounts", protect, linkAccount);
+router.post("/accounts", authMiddleware, linkAccount);
 
 // Get a single account by ID
 // http://localhost:3000/api/accounts/<account_id>
 // router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
-router.get("/accounts/:id", protect, getAccountById);
+router.get("/accounts/:id", authMiddleware, getAccountById);
 
 // Update an existing account
 // http://localhost:3000/api/accounts/<account_id>
 // router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
-router.put("/accounts/:id", protect, updateAccount);
+router.put("/accounts/:id", authMiddleware, updateAccount);
 
 module.exports = router;

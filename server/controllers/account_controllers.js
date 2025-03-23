@@ -54,14 +54,16 @@ exports.updateAccount = async (req, res) => {
     const account = await Account.findById(req.params.id);
 
     if (!account || account.user.toString() !== req.user.id) {
-      return res.status(404).json({ message: 'Account not found' });
+      return res.status(404).json({ message: "Account not found" });
     }
 
     account.name = name || account.name;
     account.type = type || account.type;
     account.balance = balance !== undefined ? balance : account.balance;
-    account.creditCard = type === 'credit card' ? creditCard : account.creditCard;
-    account.bankAccount = type === 'bank account' ? bankAccount : account.bankAccount;
+    account.creditCard =
+      type === "credit card" ? creditCard : account.creditCard;
+    account.bankAccount =
+      type === "bank account" ? bankAccount : account.bankAccount;
 
     await account.save();
     res.status(200).json(account);

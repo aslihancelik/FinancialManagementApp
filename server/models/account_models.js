@@ -75,6 +75,12 @@ AccountSchema.pre("save", async function (next) {
     );
   }
 
+  if (this.isModified("bankAccount.routingNumber")) {
+    this.bankAccount.routingNumber = await bcrypt.hash(
+      this.bankAccount.routingNumber,
+      10
+    );
+  }
   next(); // Proceed to save the document
 });
 
