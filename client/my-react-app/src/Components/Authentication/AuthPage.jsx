@@ -8,7 +8,7 @@ const AuthPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: "", // ✅ Changed 'username' to 'name' to match backend
+    name: "",
     confirmPassword: "",
   });
   const { setUser } = useAuth();
@@ -45,33 +45,36 @@ const AuthPage = () => {
           password: formData.password,
         });
       } else {
+        // Split the name into firstName and lastName
+        const nameParts = formData.name.trim().split(" ");
+
+        const firstName = nameParts[0];
+        const lastName =
+          nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
         response = await signup({
-          name: formData.name, // ✅ Change 'username' to 'name' to match backend
+          firstName, // Send split first name
+          lastName, // Send split last name
           email: formData.email,
           password: formData.password,
         });
       }
 
-      // ✅ Fix: Ensure token is stored properly
-      if (response.token) {
-        localStorage.setItem("authToken", response.token);
-      } else {
-        throw new Error("Token not received from server.");
-      }
-
       // ✅ Fix: Store user details correctly
       setUser({
         id: response.id,
-        name: response.name,
+        firstName: response.firstName,
+        lastName: response.lastName,
         email: response.email,
       });
 
       navigate("/dashboard"); // Redirect after login/signup
     } catch (error) {
-      console.error(error);
+      console.error("❌ Error during authentication:", error);
       alert(error.response?.data?.message || "Something went wrong.");
     }
   };
+
 
   return (
     <div className="auth-container">

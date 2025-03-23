@@ -2,16 +2,39 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/auth";
 
+// Create Axios instance for centralized API calls
+const apiClient = axios.create({
+  baseURL: API_URL,
+});
+
+// ✅ Add Axios interceptor to include the Authorization header
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`; // Attach token automatically
+  }
+  return config; // Proceed with the request
+}, (error) => {
+  console.error("❌ Interceptor error:", error);
+  return Promise.reject(error);
+});
+
 // ✅ Signup Function
 export const signup = async (userData) => {
   try {
     console.log("🔹 Sending signup request with:", userData);
+  
+       const response = await apiClient.post("/signup", {
+         firstName: userData.firstName, // Split name into firstName
+         lastName: userData.lastName, // and lastName
+         email: userData.email,
+         password: userData.password,
+       });
 
-    const response = await axios.post(`${API_URL}/signup`, {
-      name: userData.name, // ✅ Ensure correct field name
-      email: userData.email,
-      password: userData.password,
-    });
+     if (response.data.token) {
+       localStorage.setItem("authToken", response.data.token); // Store token after signup
+     }
+
 
     console.log("✅ Signup successful:", response.data);
     return response.data;
@@ -26,7 +49,7 @@ export const login = async (credentials) => {
   try {
     console.log("🔹 Logging in with:", credentials);
 
-    const response = await axios.post(`${API_URL}/login`, credentials);
+    const response = await apiClient.post("/login", credentials); 
 
     if (response.data.token) {
       localStorage.setItem("authToken", response.data.token);
@@ -40,31 +63,26 @@ export const login = async (credentials) => {
   }
 };
 
-// ✅ Get User Data Function
+
 export const getUser = async () => {
   try {
-    const token = localStorage.getItem("authToken");
+    console.log("🔹 Fetching user data");
 
-    if (!token) {
-      console.warn("❌ No authentication token found. Logging out.");
-      return null; // ✅ Return null instead of throwing an error
-    }
-
-    console.log("🔹 Fetching user with token:", token);
-
-    const response = await axios.get(`${API_URL}/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
+    // Axios instance automatically includes the token
+    const response = await apiClient.get("/me", { withCredentials: true });
 
     return response.data;
   } catch (error) {
-    console.error("❌ Get user error:", error.response?.data || error.message);
+    console.error("❌ Get user error:", {
+      status: error.response?.status,
+      message: error.response?.data || error.message,
+    });
 
-    // ✅ If token is invalid, clear storage and force logout
     if (error.response?.status === 401) {
       console.warn("❌ Token is invalid. Logging out.");
       localStorage.removeItem("authToken");
+      alert("Session expired. Please log in again.");
+      window.location.href = "/login"; // Redirect to login page
       return null;
     }
 
