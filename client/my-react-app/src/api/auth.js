@@ -12,6 +12,7 @@ apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
   if (token) {
     config.headers.Authorization = `Bearer ${token}`; // Attach token automatically
+    
   }
   return config; // Proceed with the request
 }, (error) => {
@@ -53,6 +54,7 @@ export const login = async (credentials) => {
 
     if (response.data.token) {
       localStorage.setItem("authToken", response.data.token);
+      console.log(response.data.token);
     }
 
     console.log("✅ Login successful:", response.data);
@@ -89,5 +91,27 @@ export const getUser = async () => {
     throw new Error(
       error.response?.data?.message || "Failed to fetch user data"
     );
+  }
+};
+
+
+
+
+export const linkAccount = async (accountData) => {
+  try {
+    console.log("🔹 Sending account data to the backend:", accountData);
+
+    // Make the POST request to link the account
+    // const response = await apiClient.post("/accounts", accountData);
+    const response = await apiClient.post("http://localhost:3000/api/accounts", accountData);
+
+    console.log("✅ Account linked successfully:", response.data);
+    return response.data; // Return the server response
+  } catch (error) {
+    console.error(
+      "❌ Error linking account:",
+      error.response?.data || error.message
+    );
+    throw new Error(error.response?.data?.message || "Failed to link account");
   }
 };

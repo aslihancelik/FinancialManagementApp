@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signup, login } from "../../api/auth"; // Import API calls
+import { signup, login, linkAccount } from "../../api/auth"; // Import API calls
 import { useAuth } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
 
@@ -75,6 +75,40 @@ const AuthPage = () => {
     }
   };
 
+  // Separate test function to call `linkAccount`
+  const handleLinkAccountTest = async () => {
+    try {
+      // Hardcoded test data for linking an account
+      // const accountData = {
+      //   name: "Ari Account",
+      //   type: "bank account",
+      //   balance: 1000,
+      //   bankAccount: {
+      //     accountNumber: "123457777",
+      //     routingNumber: "987657777",
+      //   },
+      // };
+
+      // Hardcoded test data for linking a credit card account
+      const accountData = {
+        name: "Test Credit Card",
+        type: "credit card",
+        balance: 5000,
+        creditCard: {
+          number: "4111111111111111", // Example credit card number
+          expDate: "12/25", // Expiration date
+          cvc: "123", // CVC code
+        },
+      };
+
+      const response = await linkAccount(accountData); // Call the linkAccount function
+      console.log("✅ Test account linked successfully:", response);
+      alert("Test account linked successfully!");
+    } catch (error) {
+      console.error("❌ Error linking test account:", error);
+      alert(error.message || "Failed to link test account.");
+    }
+  };
 
   return (
     <div className="auth-container">
@@ -125,6 +159,8 @@ const AuthPage = () => {
           {isLogin ? "Sign Up" : "Login"}
         </button>
       </p>
+      {/* Button to test linking an account */}
+      <button onClick={handleLinkAccountTest}>Test Link Account</button>
     </div>
   );
 };
