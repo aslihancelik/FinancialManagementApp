@@ -1,24 +1,25 @@
 const express = require("express");
+
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware"); // Import
 const {
-  createLinkToken,
-  linkBankAccount,
-  linkCreditCard,
   getAccounts,
+  linkAccount,
   getAccountById,
   updateAccount,
 } = require("../controllers/account_controllers");
-const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
+
 
 // Apply mock authentication middleware to all routes
 // router.use(mockAuthMiddleware);
 
-// Route to generate a Plaid link token
-// http://localhost:3000/api/create_link_token
-router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
+// Get all accounts for a user
+// http://localhost:3000/api/accounts
+// router.get("/accounts", mockAuthMiddleware, getAccounts);
+router.get("/accounts", authMiddleware, getAccounts);
 
-// Link a bank account
-// http://localhost:3000/api/accounts/bank
+// Link an existing account
+// http://localhost:3000/api/accounts
 
 /* {
   "name": "My Bank Account",
@@ -29,11 +30,6 @@ router.get("/create_link_token", mockAuthMiddleware, createLinkToken);
     "accountNumber": "123456789"
   }
 } */
-
-router.post("/accounts/bank", mockAuthMiddleware, linkBankAccount);
-
-// Link a credit card
-// http://localhost:3000/api/accounts/credit-card
 
 /* {
   "name": "My Card",
@@ -46,18 +42,17 @@ router.post("/accounts/bank", mockAuthMiddleware, linkBankAccount);
   }
 } */
 
-router.post("/accounts/credit-card", mockAuthMiddleware, linkCreditCard);
-
-// Get all accounts for a user
-// http://localhost:3000/api/accounts
-router.get("/accounts", mockAuthMiddleware, getAccounts);
+// router.post("/accounts", mockAuthMiddleware, linkAccount);
+router.post("/accounts", authMiddleware, linkAccount);
 
 // Get a single account by ID
 // http://localhost:3000/api/accounts/<account_id>
-router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
+// router.get("/accounts/:id", mockAuthMiddleware, getAccountById);
+router.get("/accounts/:id", authMiddleware, getAccountById);
 
 // Update an existing account
 // http://localhost:3000/api/accounts/<account_id>
-router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
+// router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
+router.put("/accounts/:id", authMiddleware, updateAccount);
 
 module.exports = router;

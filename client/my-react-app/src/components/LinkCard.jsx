@@ -1,107 +1,102 @@
 import React, { useState } from "react";
 
 const LinkCard = () => {
-  const [cardName, setCardName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
-  const [error, setError] = useState(""); // Error state
+  const [cardData, setCardData] = useState({
+    name: "",
+    number: "",
+    expDate: "",
+    cvc: "",
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Basic validation
-    if (!cardName || !cardNumber || !cvv || !expirationDate) {
-      setError("All fields are required.");
-      return;
-    }
-
-    if (cardNumber.replace(/\s/g, "").length !== 16) {
-      // Strip spaces for validation
-      setError("Card number must be 16 digits.");
-      return;
-    }
-
-    if (cvv.length !== 3) {
-      setError("CVV must be 3 digits.");
-      return;
-    }
-
-    if (!/^\d{2}\/\d{2}$/.test(expirationDate)) {
-      setError("Expiration date must be in MM/YY format.");
-      return;
-    }
-
-    // Clear any existing error if validation is successful
-    setError("");
-
-    // Simulate API call
-    console.log("Card Linked:", { cardName, cardNumber, cvv, expirationDate });
-    setCardName("");
-    setCardNumber("");
-    setCvv("");
-    setExpirationDate("");
+  // Handle change in input fields
+  const handleChange = (e) => {
+    setCardData({ ...cardData, [e.target.name]: e.target.value });
   };
 
-  // Format the card number as user types (e.g., 4111 1111 1111 1111)
-  const handleCardNumberChange = (e) => {
-    const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-    setCardNumber(value.replace(/(\d{4})(?=\d)/g, "$1 ")); // Add space every 4 digits
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation checks
+    if (!cardData.number.match(/^\d{16}$/)) {
+      return alert("Please enter a valid 16-digit card number.");
+    }
+
+    if (!cardData.expDate.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+      return alert("Please enter a valid expiration date (MM/YY).");
+    }
+
+    if (!cardData.cvc.match(/^\d{3,4}$/)) {
+      return alert("Please enter a valid CVC (3 or 4 digits).");
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/accounts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure token is present
+        },
+        body: JSON.stringify({
+          name: cardData.name,
+          type: "credit card",
+          balance: 0,
+          creditCard: {
+            number: cardData.number,
+            expDate: cardData.expDate,
+            cvc: cardData.cvc,
+          },
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Card Linked Successfully!");
+      } else {
+        alert(`Error: ${data.message || "An error occurred"}`);
+      }
+    } catch (error) {
+      console.error("Error linking card:", error);
+      alert("There was an error connecting to the server.");
+    }
   };
 
   return (
-    <div className="link-card-container">
-      <h2>Link a New Card</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>} {/* Display error */}
+    <div className="container">
+      <h1>Link a New Card</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="card-name">Name on Card:</label>
-          <input
-            type="text"
-            id="card-name"
-            value={cardName}
-            onChange={(e) => setCardName(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="card-number">Card Number:</label>
-          <input
-            type="text" // Changed to text to allow card number format
-            id="card-number"
-            value={cardNumber}
-            onChange={handleCardNumberChange}
-            required
-            maxLength="19" // Max length after formatting
-          />
-        </div>
-
-        <div>
-          <label htmlFor="cvv">CVV:</label>
-          <input
-            type="text" // Changed to text to allow CVV validation
-            id="cvv"
-            value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
-            required
-            maxLength="3"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="expiration-date">Expiration Date (MM/YY):</label>
-          <input
-            type="text" // Changed to text to allow expiration date format
-            id="expiration-date"
-            value={expirationDate}
-            onChange={(e) => setExpirationDate(e.target.value)}
-            required
-            maxLength="5" // Max length for MM/YY format
-            placeholder="MM/YY"
-          />
-        </div>
-
+        <input
+          type="text"
+          name="name"
+          placeholder="Cardholder Name"
+          onChange={handleChange}
+          value={cardData.name}
+          required
+        />
+        <input
+          type="text"
+          name="number"
+          placeholder="Card Number"
+          onChange={handleChange}
+          value={cardData.number}
+          required
+        />
+        <input
+          type="text"
+          name="expDate"
+          placeholder="Expiration Date (MM/YY)"
+          onChange={handleChange}
+          value={cardData.expDate}
+          required
+        />
+        <input
+          type="text"
+          name="cvc"
+          placeholder="CVC"
+          onChange={handleChange}
+          value={cardData.cvc}
+          required
+        />
         <button type="submit">Confirm</button>
       </form>
     </div>

@@ -1,257 +1,153 @@
-/* General Styles */
-:root {
-  --milk-color: #f1f1f1; /* Milk white color for text */
-  --dark-gray: #2c2c2c; /* Dark gray for background */
-  --darker-gray: #1a1a1a; /* Darker gray for the background */
-  --medium-gray: #3a3a3a; /* Medium gray for sections */
-  --blue: #00b894; /* Accent color (e.g., buttons, highlights) */
-  --button-blue: #0984e3; /* Button blue */
-  --hover-blue: #007bff; /* Hover blue */
-  --font-size-base: 16px; /* Base font size */
-}
 
-body {
-  font-family: Arial, sans-serif;
-  font-size: var(--font-size-base);
-  margin: 0;
-  padding: 0;
-  background-color: var(--dark-gray); /* Dark gray background */
-  color: var(--milk-color); /* White/milk-colored text */
-  display: none; /* Hide by default for non-mobile */
-}
+  body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-/* Container */
-.container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-}
+  /*container for pages*/
+  .dashboard-container, .form-container {
+   width: 375px;
+   max-width: 100%;
+   background-color: #1E1E1E;
+   padding: 20px;
+   border-radius: 15px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
 
-.center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-}
-
-/* Profile Header */
-.profile-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--medium-gray); /* Medium gray background */
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.profile-header img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.profile-header .user-info {
-  flex-grow: 1;
-  margin-left: 10px;
-}
-
-.profile-header .notification-icon {
+ /*section headers*/
+ h1, h2 {
   font-size: 20px;
-  cursor: pointer;
-}
-
-.profile-header .notification-icon:hover {
-  color: var(--blue); /* Change icon color on hover */
-}
-
-/* Wallet Section */
-.wallet-section {
-  background-color: var(--darker-gray); /* Darker gray for wallet section */
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px;
+ }
+ /*card UI*/
+ .section {
+  background-color: #2a2a2a;
   padding: 15px;
-  margin-top: 10px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  border-radius: 12px;
+  margin-bottom: 15px;
+ }
 
-.wallet-section .wallet-icon {
-  font-size: 24px;
-}
-
-/* Saved Cards */
-.saved-cards {
-  background-color: var(--medium-gray); /* Medium gray */
+ .account-card {
+  background-color: #333333;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-top: 10px;
-}
-
-.saved-cards .plus-button {
-  background-color: var(--blue);
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-}
-
-.saved-cards .plus-button:hover {
-  background-color: var(--hover-blue); /* Blue background on hover */
-}
-
-/* Linked Accounts */
-.linked-accounts {
-  background-color: var(--medium-gray); /* Medium gray */
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 8px;
-}
-
-.linked-accounts .plus-button {
-  background-color: var(--button-blue);
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-}
-
-.linked-accounts .plus-button:hover {
-  background-color: var(--hover-blue); /* Blue background on hover */
-}
-
-.linked-account-card {
-  background-color: var(--darker-gray); /* Darker gray for the linked account cards */
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-/* Link Account & Link Card Forms */
-.link-form {
-  background-color: var(--medium-gray); /* Medium gray */
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-.link-form input {
+ }
+ /*input fields*/
+ input, select {
   width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #444;
+  color: white;
+ }
+
+ /*confirm button*/
+ button {
+  width: 100%;
+  background-color: #fef8c7;
+  color: black;
   padding: 12px;
-  margin-top: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: var(--darker-gray); /* Darker gray input fields */
-  color: var(--milk-color); /* Milk-colored text */
-  transition: border 0.3s ease;
-}
-
-.link-form input:focus {
-  border: 1px solid var(--blue);
-  outline: none;
-}
-
-.link-form button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: var(--blue);
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
-  color: white;
   cursor: pointer;
-}
+ }
 
-.link-form button:hover {
-  background-color: var(--hover-blue);
-}
+ button:hover {
+  background-color: #e5e0b2;
+ }
 
-/* Bottom Navbar */
-.bottom-navbar {
+ /*bottom navigation*/
+ .navbar {
+  position: fixed;
+  bottom: 0;
+  width: 375px;
+  max-width: 100%;
+  background-color: #222;
+  padding: 15px;
   display: flex;
   justify-content: space-around;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+ }
+
+ .navbar {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: var(--dark-gray); /* Dark gray background */
-  padding: 10px 0;
-}
+  background-color: #222;
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+ }
 
-.bottom-navbar button {
-  background: none;
-  border: none;
+ .navbar a {
   color: white;
+  text-decoration: none;
   font-size: 18px;
-  cursor: pointer;
-}
+ }
 
-.bottom-navbar button:hover {
-  background-color: var(--hover-blue);
+ .navbar a:hover {
+  color: #fef8c7;
+ }
+
+ .container {
+  background: #121212;
   color: white;
-}
-
-.navbar button.active {
-  background-color: var(--hover-blue); /* Blue background */
-  color: white; /* White text */
-}
-
-/* Mobile-Only Restriction */
-@media only screen and (min-width: 768px) {
-  body {
-    display: none; /* Hide app content for devices larger than mobile screens */
-  }
-  .mobile-only-message {
-    display: block; /* Show message for non-mobile devices */
-  }
-}
-
-/* Mobile Styles */
-@media only screen and (max-width: 767px) {
-  body {
-    display: block; /* Show app content for mobile screens */
-  }
-  .mobile-only-message {
-    display: none; /* Hide message for mobile users */
-  }
-}
-
-/* Optional: Styling for the "Mobile Only" Message */
-.mobile-only-message {
-  text-align: center;
   padding: 20px;
-  font-size: 20px;
-  color: #ff0000;
-  background-color: #2c2c2c;
-  border-radius: 8px;
+  text-align: center;
 }
 
-/* Responsive Design for smaller screens */
-@media (max-width: 480px) {
-  .profile-header img {
-    width: 40px;
-    height: 40px;
-  }
+.saved-cards, .accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
 
-  .profile-header .notification-icon {
-    font-size: 18px;
-  }
+.card, .account-card {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 10px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
 
-  .bottom-navbar button {
-    font-size: 16px;
-  }
+h1, h2 {
+  font-weight: bold;
+}
 
-  .bottom-navbar {
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-  }
+button {
+  background: #ffcc00;
+  color: black;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
 
-  .bottom-navbar button {
-    font-size: 16px;
-    margin: 5px 0;
+ /*only for mobile*/
+ /* 
+ @media screen and (min-width: 768px) {
+   body {
+   display: none; 
   }
 }
+ */
