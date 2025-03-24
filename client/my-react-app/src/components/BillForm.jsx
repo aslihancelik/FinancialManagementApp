@@ -21,8 +21,13 @@ const BillForm = ({ addBill, editBill, billToEdit }) => {
     e.preventDefault();
 
     // Validate the form inputs
-    if (name.trim() === '' || amountDue.trim() === '' || isNaN(amountDue) || parseFloat(amountDue) <= 0) {
-      setError('Please provide valid inputs for all fields.');
+    if (name.trim() === '') {
+      setError('Bill name cannot be empty.');
+      return;
+    }
+
+    if (amountDue.trim() === '' || isNaN(amountDue) || parseFloat(amountDue) <= 0) {
+      setError('Amount Due should be a positive number.');
       return;
     }
 
@@ -50,7 +55,8 @@ const BillForm = ({ addBill, editBill, billToEdit }) => {
     <div>
       <h3>{billToEdit ? 'Edit Bill' : 'Add Bill'}</h3>
       <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Error message */}
+        {error && <p className="error-message">{error}</p>} {/* Error message with class */}
+        
         <div>
           <label htmlFor="name">Bill Name:</label>
           <input
@@ -94,5 +100,6 @@ const BillForm = ({ addBill, editBill, billToEdit }) => {
 };
 
 export default BillForm;
+
 
 

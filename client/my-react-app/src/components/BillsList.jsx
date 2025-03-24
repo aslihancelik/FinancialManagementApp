@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { format } from 'date-fns'; // Optional, for custom date formatting
 
 const BillList = ({ bills, onEdit, onDelete }) => {
@@ -45,19 +44,6 @@ const BillList = ({ bills, onEdit, onDelete }) => {
   );
 };
 
-BillList.propTypes = {
-  bills: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      amount: PropTypes.number.isRequired,
-      dueDate: PropTypes.string.isRequired, // You can use a different date type depending on your data
-      frequency: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-};
-
 export default BillList;
+
 
