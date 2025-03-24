@@ -134,56 +134,48 @@ exports.updateAccount = async (req, res) => {
     const account = await Account.findById(req.params.id);
 
     if (!account || account.user.toString() !== req.user.id) {
-      return res.status(404).json({ message: "Account not found" });
+      return res.status(404).json({ message: 'Account not found' });
     }
 
     account.name = name || account.name;
-    account.type = type || account.type;
     account.balance = balance !== undefined ? balance : account.balance;
-    if (type === "credit card" && creditCard) {
-      account.creditCard = {
-        ...creditCard,
-        last4: creditCard.number.slice(-4), // Update last 4 digits
-      };
+
+    // Update credit card details if provided
+    if (account.type === "credit card") {
+      account.creditCard.number = creditCard.number || account.creditCard.number;
+      account.creditCard.cvc = creditCard.cvc || account.creditCard.cvc;
+      account.creditCard.expDate = creditCard.expDate || account.creditCard.expDate;
     }
 
-    if (type === "bank account" && bankAccount) {
-      account.bankAccount = {
-        ...bankAccount,
-        last4Account: bankAccount.accountNumber.slice(-4), // Update last 4 digits of account number
-        last4Routing: bankAccount.routingNumber.slice(-4), // Update last 4 digits of routing number
-      };
+    // Update bank account details if provided
+    if (account.type === 'bank account') {
+      account.bankAccount.routingNumber = bankAccount.routingNumber || account.bankAccount.routingNumber;
+      account.bankAccount.accountNumber = bankAccount.accountNumber || account.bankAccount.accountNumber;
     }
-
-    // account.creditCard =
-    //   type === "credit card" ? creditCard : account.creditCard;
-    // account.bankAccount =
-    //   type === "bank account" ? bankAccount : account.bankAccount;
-
     await account.save();
-
-    // Mask sensitive data in the response
-    const maskedAccount = {
-      ...account._doc,
-      bankAccount: account.bankAccount
-        ? {
-            ...account.bankAccount,
-            accountNumber: maskNumber(account.bankAccount.last4Account),
-            routingNumber: maskNumber(account.bankAccount.last4Routing),
-          }
-        : undefined,
-      creditCard: account.creditCard
-        ? {
-            ...account.creditCard,
-            number: maskNumber(account.creditCard.last4),
-          }
-        : undefined,
-    };
-
-    res.status(200).json(maskedAccount);
-
-    // res.status(200).json(account);
+    res.status(200).json(account);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+// // Get balance for an account
+// exports.getBalance = async (req, res) => {
+//   try {
+//     // Find the account by ID
+//     const account = await Account.findById(req.params.id);
+
+//     // Check if account exists and belongs to the authenticated user
+//     if (!account || account.user.toString() !== req.user.id) {
+//       return res.status(404).json({ message: "Account not found" });
+//     }
+
+//     // Respond with the account balance
+//     res.status(200).json({ balance: account.balance });
+//   } catch (error) {
+//     console.error("Error fetching account balance:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
