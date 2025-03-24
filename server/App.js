@@ -1,37 +1,48 @@
+// Imports
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-require('dotenv').config(); 
-const app = express();
-
-// Middleware
-app.use(express.json()); // Allows JSON data in requests
-app.use(cors()); // Enables Cross-Origin Resource Sharing
-
-// Connect to MongoDB using MONGO_URI from .env
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Connection Error:", err));
-
-// Import Routes
-const authRoutes = require("./routes/auth_routes");
+const cookieParser = require("cookie-parser");
+const goalRoutes = require("./routes/goalroutes");
+const authRoutes = require("./routes/authRoutes");
 const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
 
-app.use("/auth", authRoutes);
+// Load environment variables
+dotenv.config();
+
+// Initialize Express app
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// ✅ Middleware
+app.use(express.json()); // Parse incoming JSON
+app.use(cookieParser()); // Parse cookies
+app.use(express.urlencoded({ extended: true })); // Parse form data
+app.use(
+  cors({
+    origin: "http://localhost:5174", // Adjust to match your frontend port
+    credentials: true,
+  })
+);
+
+// ✅ API Routes
+app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/goals", goalRoutes); // Goals routes
 app.use("/bills", createBillRoutes);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send("Something went wrong!"); // Generic error message for unexpected errors
+// ✅ Test route
+app.get("/", (req, res) => {
+  res.send("✅ Server is running!");
 });
 
-// Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// ✅ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-//http://localhost:3000/auth/
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
