@@ -24,7 +24,7 @@ const goalSchema = new mongoose.Schema(
       required: true,
     },
     account: {
-      type: String, // Optional: Link goal to a specific account
+      type: String, // Link goal to a specific account
       default: null,
     },
   },
