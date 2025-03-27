@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
 const LinkCard = () => {
-  //state to store card details entered by user
+  const API_URL = "http://localhost:3000/api"; // Ensure this URL is defined
+
+  // State to store card details entered by user
   const [cardData, setCardData] = useState({
     name: "",
     number: "",
@@ -9,43 +11,58 @@ const LinkCard = () => {
     cvc: "",
   });
 
-  // Handle change in input fields aand updates the state dynamically
+  // State to handle error messages
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Handle change in input fields and update state dynamically
   const handleChange = (e) => {
-    setCardData({ ...cardData, [e.target.name]: e.target.value });
+    setCardData({ ...cardData, [e.target.name]: e.target.value.trim() }); //trim whitespace to avoid validation issues with extra space
+  };
+
+  // Validate inputs
+  const validateInputs = () => {
+    // Validate card number (16 digits)
+    if (!cardData.number.match(/^\d{16}$/)) {
+      return "Please enter a valid 16-digit card number.";
+    }
+    // Validate expiration date (MM/YY format)
+    if (!cardData.expDate.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+      return "Please enter a valid expiration date (MM/YY).";
+    }
+    // Validate CVC (3 or 4 digits)
+    if (!cardData.cvc.match(/^\d{3,4}$/)) {
+      return "Please enter a valid CVC (3 or 4 digits).";
+    }
+    return null;
   };
 
   // Handle form submission when confirm is pressed
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation checks, must be 16 digits
-    if (!cardData.number.match(/^\d{16}$/)) {
-      return alert("Please enter a valid 16-digit card number.");
-    }
-    // Validate exp date
-    if (!cardData.expDate.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
-      return alert("Please enter a valid expiration date (MM/YY).");
-    }
-    //validate cvc
-    if (!cardData.cvc.match(/^\d{3,4}$/)) {
-      return alert("Please enter a valid CVC (3 or 4 digits).");
+    const validationError = validateInputs();
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    } else {
+      setErrorMessage(""); // Clear any previous error
     }
 
-    //retrieve token from LocalStorage
+    // Retrieve token from LocalStorage
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("You are not logged in. Please log in to continue");
-      //redirect to the Login page
+      alert("You are not logged in. Please log in to continue.");
       window.location.href = "/login";
       return;
     }
+
     try {
-      //send a  request to the backend to link the card
+      // Send a request to the backend to link the card
       const response = await fetch(`${API_URL}/accounts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // includes the jwt token
+          Authorization: `Bearer ${token}`, // Include JWT token
         },
         body: JSON.stringify({
           name: cardData.name,
@@ -62,7 +79,7 @@ const LinkCard = () => {
       const data = await response.json();
       if (response.ok) {
         alert("Card Linked Successfully!");
-        setCardData({name: "", number: "", expDate: "", cvc: ""});  //clear the input fields
+        setCardData({ name: "", number: "", expDate: "", cvc: "" }); // Clear the input fields
       } else {
         console.error("Error linking card:", data);
         alert(`Error: ${data.message || "An error occurred"}`);
@@ -77,7 +94,10 @@ const LinkCard = () => {
     <div className="container">
       <h1>Link a New Card</h1>
       <form onSubmit={handleSubmit}>
-        {/*cardholder name input */}
+        {/* Display error message if there is one */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+        {/* Cardholder Name */}
         <input
           type="text"
           name="name"
@@ -86,7 +106,7 @@ const LinkCard = () => {
           value={cardData.name}
           required
         />
-        {/*card number input */}
+        {/* Card Number */}
         <input
           type="text"
           name="number"
@@ -95,7 +115,7 @@ const LinkCard = () => {
           value={cardData.number}
           required
         />
-        {/*exp date input */}
+        {/* Expiration Date */}
         <input
           type="text"
           name="expDate"
@@ -104,7 +124,7 @@ const LinkCard = () => {
           value={cardData.expDate}
           required
         />
-        {/*cvc input */}
+        {/* CVC */}
         <input
           type="text"
           name="cvc"

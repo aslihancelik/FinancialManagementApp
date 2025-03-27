@@ -5,8 +5,9 @@ export const fetchAccounts = async () => {
   const token = localStorage.getItem("token");
   //then we make sure the token exists,
     // and if token doesn't exist throw an error
-  if (!token) 
+  if (!token) {
     throw new Error("No auth token found");
+}
   try {
     //then make the fetch request to the backend API to get the accounts
     const response = await fetch(`${API_URL}/accounts`, {
@@ -15,6 +16,7 @@ export const fetchAccounts = async () => {
         "Content-Type": "application/json", //specify the content type
         "Authorization": `Bearer ${token}`,
       },
+      credentials: "include", 
     });
     //then if the response is not right, we throw an error
     if (!response.ok) {
@@ -31,14 +33,14 @@ export const fetchAccounts = async () => {
 
 //add a new bank account
 export const addBankAccount = async (account) => {
-    try{
+ 
         //get the JWT token form the localStorage
         const token = localStorage.getItem("token");
         //if token do not exists throw an error
         if(!token) {
             throw new Error("No token found.Please log in.");
         }
-
+try {
         //make the fetch request to the backend API to add a new bank account
     const response = await fetch(`${API_URL}/bank`, {
         method: "POST",
@@ -53,21 +55,22 @@ if(!response.ok) {
     throw new Error("Failed to add bank account.");
 }
 //return the response body as JSON
-return response.json();
+return await response.json();
     } catch (error) {
         console.log("Error adding bank account:", error);
+        throw error;
     }
 };
 
 //add a new credit card
 export const addCreditCard = async (card) => {
-    try {
     //get the JWT token from LocalStorage
     const token = localStorage.getItem("token");
     //see if token exists otherwise throw an error
         if(!token) {
             throw new Error("No token found. Please log in.");
         }
+        try {
     //make the fetch request to the backend API and add a new credit card
     const response = await fetch(`${API_URL}/credit-card`, {
         method: "POST",
@@ -82,8 +85,17 @@ export const addCreditCard = async (card) => {
         throw new Error("Failed to add credit card.");
     }
     //return the response body as JSON
-    return response.json();
+    return await response.json();
 }catch (error) {
     console.error("error adding credit card", error);
+    throw error;
     }
 };
+// Group functions into an API object for default export
+const api = {
+  fetchAccounts,
+  addBankAccount,
+  addCreditCard,
+};
+
+export default api;

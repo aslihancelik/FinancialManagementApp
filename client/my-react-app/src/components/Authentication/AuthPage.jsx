@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { signup, login } from "../../api/auth"; // Import API calls
-import { useAuth } from "../../Context/authContext";
+import { signup, login } from "../api/auth"; // Import API calls
+import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 
 const AuthPage = () => {
