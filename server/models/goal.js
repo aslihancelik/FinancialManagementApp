@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 
-const goalSchema = new mongoose.Schema(
+const goalSchema = new mongoose.Schema( //  Create the Goal Schema
   {
-    user: {
+    user: { // Link goal to a specific user
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    title: {
+    title: { //  Define the title field
       type: String,
       required: true,
     },
-    targetAmount: {
+    targetAmount: { //  Define the targetAmount field
       type: Number,
       required: true,
     },
-    savedAmount: {
+    savedAmount: { //  Define the savedAmount field
       type: Number,
       default: 0,
     },
-    deadline: {
+    deadline: { // Define the deadline field
       type: Date,
       required: true,
     },
@@ -28,7 +28,7 @@ const goalSchema = new mongoose.Schema(
       default: null,
     },
   },
-  { timestamps: true }
+  { timestamps: true } // Automatically add createdAt and updatedAt fields
 );
 
 module.exports = mongoose.model("Goal", goalSchema);

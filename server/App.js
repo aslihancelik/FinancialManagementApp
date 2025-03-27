@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const goalRoutes = require("./routes/goalroutes");
 const authRoutes = require("./routes/authRoutes");
-const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
+const createBillRoutes = require("./routes/bills_routes"); //  Import bills routes
 
 // Load environment variables
 dotenv.config();
@@ -21,7 +21,7 @@ app.use(cookieParser()); // Parse cookies
 app.use(express.urlencoded({ extended: true })); // Parse form data
 app.use(
   cors({
-    origin: "http://localhost:5174", // Adjust to match your frontend port
+    origin: "http://localhost:5174", //  Allow the React app to connect to the server
     credentials: true,
   })
 );
@@ -29,7 +29,7 @@ app.use(
 // ✅ API Routes
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/goals", goalRoutes); // Goals routes
-app.use("/bills", createBillRoutes);
+app.use("/bills", createBillRoutes); // Bills routes
 
 // ✅ Test route
 app.get("/", (req, res) => {
@@ -37,10 +37,10 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+mongoose 
+  .connect(process.env.DB_URL) // 
+  .then(() => console.log("✅ Connected to MongoDB")) //
+  .catch((err) => console.error("❌ MongoDB connection error:", err)); 
 
 // ✅ Start server
 app.listen(PORT, () => {

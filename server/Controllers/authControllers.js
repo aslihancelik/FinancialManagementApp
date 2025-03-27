@@ -3,15 +3,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
-// ✅ Generate JWT Token and store in a cookie
-const generateToken = (res, id) => {
-  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+//  Generate JWT Token and store in a cookie
+const generateToken = (res, id) => { 
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });  
 
-  // ✅ Set JWT as HttpOnly Cookie
+  //  Set JWT as HttpOnly Cookie
   res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    httpOnly: true, //  Prevents client-side JavaScript from reading the cookie
+    secure: process.env.NODE_ENV === "production", //  Cookie only sent over HTTPS in production
+    sameSite: "strict", //  Reduces CSRF risks
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 

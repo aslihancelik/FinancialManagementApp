@@ -5,11 +5,11 @@ const {
   registerUser,
   updateUserProfile,
   logoutUser,
-} = require("../Controllers/authControllers");
-const authenticateUser = require("../middleware/authMiddleware");
+} = require("../Controllers/authControllers"); // Import auth controllers
+const authenticateUser = require("../middleware/authMiddleware"); // Import the authentication middleware
 
 const router = express.Router();
-console.log("🔍 getUserProfile:", typeof getUserProfile);
+console.log("🔍 getUserProfile:", typeof getUserProfile); 
 
 
 // ✅ Authentication Routes
