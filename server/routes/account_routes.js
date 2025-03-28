@@ -7,8 +7,9 @@ const {
   linkAccount,
   getAccountById,
   updateAccount,
+  getBalance,
 } = require("../controllers/account_controllers");
-
+// const mockAuthMiddleware = require("../middleware/mockAuthMiddleware");
 
 // Apply mock authentication middleware to all routes
 // router.use(mockAuthMiddleware);
@@ -54,5 +55,9 @@ router.get("/accounts/:id", authMiddleware, getAccountById);
 // http://localhost:3000/api/accounts/<account_id>
 // router.put("/accounts/:id", mockAuthMiddleware, updateAccount);
 router.put("/accounts/:id", authMiddleware, updateAccount);
+
+// // Route to get the balance
+// // http://localhost:3000/api/accounts/<account_id>/balance
+// router.get("accounts/:id/balance", authMiddleware, getBalance); // Authent
 
 module.exports = router;

@@ -14,7 +14,7 @@ const AccountSchema = new mongoose.Schema(
       required: true,
     },
     type: {
-      //used to distinguish between creedit card and bank account
+      //used to distinguish between credit card and bank account
       type: String,
       required: true,
     },
