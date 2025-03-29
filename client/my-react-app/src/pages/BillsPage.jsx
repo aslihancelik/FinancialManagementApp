@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import BillsList from '../components/BillsList';
-import BillForm from '../components/BillForm';
-import { v4 as uuidv4 } from 'uuid'; // For unique IDs
+import React, { useState } from "react";
+import BillsList from "../components/BillsList";
+import BillForm from "../components/BillForm";
+import { v4 as uuidv4 } from "uuid"; // For unique IDs
 
 // Example initial data
 const initialBills = [
-  { id: uuidv4(), name: 'Netflix', amountDue: 15, frequency: 'Monthly' },
-  { id: uuidv4(), name: 'Electricity', amountDue: 50, frequency: 'Monthly' },
+  { id: uuidv4(), name: "Netflix", amountDue: 15, frequency: "Monthly" },
+  { id: uuidv4(), name: "Electricity", amountDue: 50, frequency: "Monthly" },
 ];
 
 const BillsPage = () => {
@@ -16,7 +16,8 @@ const BillsPage = () => {
     setBills((prevBills) => {
       // Check for duplicates by name and frequency
       const billExists = prevBills.some(
-        (bill) => bill.name === newBill.name && bill.frequency === newBill.frequency
+        (bill) =>
+          bill.name === newBill.name && bill.frequency === newBill.frequency
       );
       if (billExists) {
         alert("Bill with this name and frequency already exists.");
@@ -45,12 +46,10 @@ const BillsPage = () => {
   return (
     <div>
       <h2>Recurring Bills</h2>
-      <BillsList bills={bills} removeBill={removeBill} editBill={editBill} />
+      <BillsList bills={bills} onDelete={removeBill} onEdit={editBill} />
       <BillForm addBill={addBill} />
     </div>
   );
 };
 
 export default BillsPage;
-
-

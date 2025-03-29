@@ -9,10 +9,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("authToken");
-
-      if (!token) {
-        return;
-      }
+      if (!token) return;
 
       try {
         const userData = await getUser();
@@ -25,11 +22,18 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  // ✅ LOGOUT FUNCTION
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Custom hook
 export const useAuth = () => useContext(AuthContext);
