@@ -17,6 +17,16 @@ app.use(bodyParser.json());
 //use the transaction routes
 app.use("/api", transactionRoutes);
 
+// Enable CORS for all origins
+// app.use(cors());
+
+// Optionally, restrict allowed origins
+app.use(cors({
+    origin: "http://localhost:5173", // Allow requests only from your frontend
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    credentials: true, // Allow cookies and authorization headers if needed
+}));
+
 
 //connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/financialApp", {
