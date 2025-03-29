@@ -4,16 +4,15 @@ import { jwtDecode } from "jwt-decode";
 
 const API_URL = "http://localhost:3000/api/auth";
 
-// ✅ Signup Function (Updated for firstName and lastName)
+//  Signup Function (
 export const signup = async (userData) => {
   try {
     console.log("🔹 Sending signup request with:", userData);
 
     // Send firstName, lastName, email, and password to the backend
     const response = await axios.post(`${API_URL}/signup`, {
-      firstName: userData.firstName, // Updated field for firstName
-      lastName: userData.lastName, // Updated field for lastName
-      email: userData.email,
+      firstName: userData.firstName, 
+      lastName: userData.lastName, 
       password: userData.password,
     });
 
@@ -25,7 +24,7 @@ export const signup = async (userData) => {
   }
 };
 
-// ✅ Login Function (No changes needed for login functionality, but ensure backend sends firstName and lastName)
+//  Login Function 
 export const login = async (credentials) => {
   try {
     console.log("🔹 Logging in with:", credentials);
@@ -44,14 +43,14 @@ export const login = async (credentials) => {
   }
 };
 
-// ✅ Check if the token has expired
+//  Check if the token has expired
 const isTokenExpired = (token) => {
   const decoded = jwtDecode(token);
   const currentTime = Date.now() / 1000; // Current time in seconds
   return decoded.exp < currentTime;
 };
 
-// ✅ Get User Data Function (Updated to handle firstName and lastName)
+//  Get User Data Function 
 export const getUser = async () => {
   try {
     const token = localStorage.getItem("authToken");
@@ -93,7 +92,7 @@ export const getUser = async () => {
   }
 };
 
-// Optional: Add token expiration check after successful login
+//  Add token expiration check after successful login
 export const checkTokenValidity = () => {
   const token = localStorage.getItem("authToken");
 

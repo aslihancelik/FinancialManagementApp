@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getUser } from "../api/auth";
 
-const AuthContext = createContext();
+const AuthContext = createContext(); 
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUser = async () => { 
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // ✅ LOGOUT FUNCTION
+  //  LOGOUT FUNCTION
   const logout = () => {
     localStorage.removeItem("authToken");
     setUser(null);

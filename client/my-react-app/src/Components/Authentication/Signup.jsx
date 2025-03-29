@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../../api/auth"; // Correct API function
+import { signup } from "../../api/auth"; 
 
 const Signup = () => {
-  // Updated state to include firstName and lastName
+  // 
   const [formData, setFormData] = useState({
-    firstName: "", // Added firstName
-    lastName: "", // Added lastName
+    firstName: "", 
+    lastName: "", 
     email: "",
     password: "",
     confirmPassword: "",

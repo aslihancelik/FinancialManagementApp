@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup
   const [formData, setFormData] = useState({
-    firstName: "", // Updated to firstName
-    lastName: "", // Updated to lastName
+    firstName: "", 
+    lastName: "", 
     email: "",
     password: "",
     confirmPassword: "",
@@ -49,8 +49,8 @@ const AuthPage = () => {
         });
       } else {
         response = await signup({
-          firstName: formData.firstName, // Send firstName to the backend
-          lastName: formData.lastName, // Send lastName to the backend
+          firstName: formData.firstName, 
+          lastName: formData.lastName, 
           email: formData.email,
           password: formData.password,
         });
@@ -66,8 +66,8 @@ const AuthPage = () => {
       // Store user details correctly
       setUser({
         id: response.id,
-        firstName: response.firstName, // Ensure firstName is stored
-        lastName: response.lastName, // Ensure lastName is stored
+        firstName: response.firstName, 
+        lastName: response.lastName, 
         email: response.email,
       });
 
