@@ -96,21 +96,21 @@ export const getUser = async () => {
 
 
 
-export const linkAccount = async (accountData) => {
-  try {
-    console.log("🔹 Sending account data to the backend:", accountData);
+//export const linkAccount = async (accountData) => {
+ // try {
+//     console.log("🔹 Sending account data to the backend:", accountData);
 
-    // Make the POST request to link the account
-    // const response = await apiClient.post("/accounts", accountData);
-    const response = await apiClient.post("http://localhost:3000/api/accounts", accountData);
+//     // Make the POST request to link the account
+//     // const response = await apiClient.post("/accounts", accountData);
+//     const response = await apiClient.post("http://localhost:3000/api/accounts", accountData);
 
-    console.log("✅ Account linked successfully:", response.data);
-    return response.data; // Return the server response
-  } catch (error) {
-    console.error(
-      "❌ Error linking account:",
-      error.response?.data || error.message
-    );
-    throw new Error(error.response?.data?.message || "Failed to link account");
-  }
-};
+//     console.log("✅ Account linked successfully:", response.data);
+//     return response.data; // Return the server response
+//   } catch (error) {
+//     console.error(
+//       "❌ Error linking account:",
+//       error.response?.data || error.message
+//     );
+//     throw new Error(error.response?.data?.message || "Failed to link account");
+//   }
+// };

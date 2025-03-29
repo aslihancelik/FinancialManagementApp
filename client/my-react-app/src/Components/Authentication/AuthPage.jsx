@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { signup, login, linkAccount } from "../../api/auth"; // Import API calls
-// import { signup, login} from "../../api/auth"; // Import API calls
+//import { signup, login, linkAccount } from "../../api/auth"; // Import API calls
+ import { signup, login} from "../../api/auth"; // Import API calls
 import { useAuth } from "../../Context/authContext";
-// import { useAuth } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
+
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup
@@ -92,16 +92,16 @@ const AuthPage = () => {
       // };
 
       // Hardcoded test data for linking a credit card account
-      const accountData = {
-        name: "Aria Ela Test",
-        type: "credit card",
-        balance: 5000,
-        creditCard: {
-          number: "4111111111111111", // Example credit card number
-          expDate: "12/25", // Expiration date
-          cvc: "123", // CVC code
-        },
-      };
+      // const accountData = {
+      //   name: "Aria Ela Test",
+      //   type: "credit card",
+      //   balance: 5000,
+      //   creditCard: {
+      //     number: "4111111111111111", // Example credit card number
+      //     expDate: "12/25", // Expiration date
+      //     cvc: "123", // CVC code
+      //   },
+      //};
 
       const response = await linkAccount(accountData); // Call the linkAccount function
       console.log("✅ Test account linked successfully:", response);
@@ -162,7 +162,7 @@ const AuthPage = () => {
         </button>
       </p>
       {/* Button to test linking an account */}
-      <button onClick={handleLinkAccountTest}>Test Link Account</button>
+      {/* <button onClick={handleLinkAccountTest}>Test Link Account</button> */}
     </div>
   );
 };
