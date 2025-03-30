@@ -1,0 +1,76 @@
+/* Center the form container */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000000; /* Black background */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #ffffff; /* White text */
+}
+
+/* Form container styling */
+form {
+  background-color: #1a1a1a; /* Dark background */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 400px; /* Limit form width */
+  width: 100%; /* Responsive form */
+  display: flex;
+  flex-direction: column; /* Arrange form fields vertically */
+  align-items: center; /* Center form items horizontally */
+}
+
+/* Form labels */
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #bfb59d; /* Beige for labels */
+  width: 100%; /* Ensure labels are aligned */
+  text-align: left; /* Align labels to the left */
+}
+
+/* Center text within inputs and buttons */
+input,
+textarea,
+button {
+  background-color: #2b2b2b; /* Input background */
+  color: #ffffff; /* Light text */
+  border: 1px solid #444444; /* Subtle border */
+  padding: 10px 0;
+  border-radius: 5px;
+  margin-bottom: 15px; /* Space between fields */
+  width: 100%; /* Full-width inputs */
+  text-align: center; /* Center the text inside inputs and textarea */
+}
+
+/* Disable the textarea (description box) */
+textarea {
+  resize: none; /* Prevent resizing */
+  pointer-events: none; /* Disable manual edits */
+}
+
+/* Focus styles for inputs and textareas */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #bfb59d; /* Highlight border on focus */
+}
+
+/* Submit button styling */
+button {
+  background-color: #bfb59d; /* Beige button */
+  color: #000000; /* Black text */
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  text-align: center; /* Center the button text */
+}
+
+button:hover {
+  background-color: #9c8f7b; /* Darker beige on hover */
+}

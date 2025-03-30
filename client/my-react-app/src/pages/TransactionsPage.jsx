@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import TransactionList from "../components/TransactionList";
+// import TransactionList from "../components/TransactionList";
 import { fetchTransactions } from "../api/transactionsApi"; // Import the function
 import "../styles/TransactionsPage.css"; // Import the updated CSS
+
+import { sortTransactionsByDate } from "../utils/sortTransactions";
+
+
 
 
 const TransactionsPage = () => {
@@ -22,9 +26,12 @@ const TransactionsPage = () => {
     getTransactions();
   }, []);
 
+  // Sort transactions after fetching them
+  const sortedTransactions = sortTransactionsByDate(transactions);
 
   return (
     <div>
+      <h1>Transactions</h1>
       <button
         className="add-transaction"
         onClick={() => navigate("/add-transaction")}
@@ -41,9 +48,10 @@ const TransactionsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {/* {transactions.map((transaction) => ( */}
+          {sortedTransactions.map((transaction) => (
             <tr key={transaction._id}>
-              <td>{new Date(transaction.date).toLocaleDateString()}</td>
+              <td>{new Date(transaction.date).toISOString().split("T")[0]}</td>
               <td>{transaction.category}</td>
               <td>${transaction.amount}</td>
               <td>{transaction.description}</td>
