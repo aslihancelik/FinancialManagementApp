@@ -1,46 +1,9 @@
-// import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import TransactionList from "../components/TransactionList";
-// import axios from "axios";
-
-
-// const TransactionsPage = () => {
-//   const [transactions, setTransactions] = useState([]);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchTransactions = async () => {
-//       try {
-//         const response = await axios.get(
-//           "http://localhost:3000/api/transactions"
-//         );
-//         console.log(transactions)
-//         setTransactions(response.data);
-//       } catch (error) {
-//         console.error("Error fetching transactions:", error);
-//       }
-//     };
-//     fetchTransactions();
-//   }, []);
-
-//   return (
-//     <div>
-//       <button onClick={() => navigate("/add-transaction")}>
-//         Add Transaction
-//       </button>
-//       <TransactionList transactions={transactions} />
-//     </div>
-//   );
-// };
-
-// export default TransactionsPage;
-
-
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TransactionList from "../components/TransactionList";
 import { fetchTransactions } from "../api/transactionsApi"; // Import the function
+import "../styles/TransactionsPage.css"; // Import the updated CSS
+
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -59,12 +22,35 @@ const TransactionsPage = () => {
     getTransactions();
   }, []);
 
+
   return (
     <div>
-      <button onClick={() => navigate("/add-transaction")}>
+      <button
+        className="add-transaction"
+        onClick={() => navigate("/add-transaction")}
+      >
         Add Transaction
       </button>
-      <TransactionList transactions={transactions} />
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => (
+            <tr key={transaction._id}>
+              <td>{new Date(transaction.date).toLocaleDateString()}</td>
+              <td>{transaction.category}</td>
+              <td>${transaction.amount}</td>
+              <td>{transaction.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

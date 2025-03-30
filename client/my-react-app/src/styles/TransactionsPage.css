@@ -1,0 +1,58 @@
+/* Center content */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000000; /* Black background */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #ffffff; /* White text */
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+    background-color: #1a1a1a; /* Dark table background */
+    color: #ffffff; /* Light text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Table header */
+th {
+    background-color: #777b82; /* Beige header background */
+    color: #000000; /* Black text for contrast */
+    padding: 15px;
+    text-align: left;
+}
+
+/* Table rows and cells */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #333333; /* Subtle border */
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #1f1f1f; /* Slightly lighter rows for contrast */
+}
+
+/* Add transaction button */
+.add-transaction {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #777b82; /* Beige button */
+    color: #000000; /* Black text */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-transaction:hover {
+    background-color: #7e7975; /* Darker beige on hover */
+}

@@ -40,6 +40,7 @@ const AddTransactionPage = () => {
   };
 
   return <AddTransactionForm onSubmit={handleFormSubmit} />;
+
 };
 
 export default AddTransactionPage;
