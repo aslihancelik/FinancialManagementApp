@@ -74,3 +74,7 @@ button {
 button:hover {
   background-color: #9c8f7b; /* Darker beige on hover */
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon visible on the background */
+}

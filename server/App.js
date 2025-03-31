@@ -14,8 +14,7 @@ const PORT = process.env.PORT || 3000;
 //middleware to parse incoming JSON requests
 app.use(bodyParser.json());
 
-//use the transaction routes
-app.use("/api", transactionRoutes);
+
 
 // Enable CORS for all origins
 // app.use(cors());
@@ -27,6 +26,9 @@ app.use(cors({
     credentials: true, // Allow cookies and authorization headers if needed
 }));
 
+
+//use the transaction routes
+app.use("/api", transactionRoutes);
 
 //connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/financialApp", {

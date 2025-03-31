@@ -55,6 +55,16 @@ const TransactionsPage = () => {
               <td>{transaction.category}</td>
               <td>${transaction.amount}</td>
               <td>{transaction.description}</td>
+              <td>
+                <button
+                  className="edit-button"
+                  onClick={() =>
+                    navigate(`/edit-transaction/${transaction._id}`)
+                  }
+                >
+                  Edit
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

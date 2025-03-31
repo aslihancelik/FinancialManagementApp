@@ -21,6 +21,7 @@ const AddTransactionForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>New Transaction</h1>
       <label>
         Amount:
         <input

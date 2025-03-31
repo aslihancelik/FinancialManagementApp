@@ -85,6 +85,34 @@ router.post("/transactions", async (req, res) => {
   }
  });
 
+
+
+
+//get a transaction by id
+router.get("/transactions/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid transaction ID" });
+  }
+
+  try {
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching transaction", error });
+  }
+});
+
+
+
+
+
+
  //routes to delete by id
  router.delete("/transactions/:id", async (req, res) => {
   const {id} = req.params;
