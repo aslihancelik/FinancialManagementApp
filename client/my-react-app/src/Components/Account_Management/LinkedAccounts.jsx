@@ -149,7 +149,7 @@ const LinkedAccounts = () => {
           />
         </div>
         <button type="submit">Link Account</button>
-        <h1>Linked Accounts</h1>
+        <h1>🔗 Linked Accounts</h1>
       </form>
 
       {/*  Show loading spinner */}
@@ -160,6 +160,7 @@ const LinkedAccounts = () => {
       ) : (
         <p> No linked accounts found.</p>
       )}
+      
     </div>
   );
 };

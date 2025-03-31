@@ -13,7 +13,7 @@ const Dashboard = () => {
       <p>Email: {user?.email}</p>
       <p>Your financial data will be displayed here.</p>
 
-      { /*<button onClick={() => navigate("wallet/")}>Go to Wallet</button>*/}
+      {/*<button onClick={() => navigate("wallet/")}>Go to Wallet</button>*/}
       <Link to="/dashboard/wallet">🏠 Dashboard</Link>
       <Link to="/bills">📋 Bills</Link>
       <Link to="/savings-goals">💰 Goals</Link>
