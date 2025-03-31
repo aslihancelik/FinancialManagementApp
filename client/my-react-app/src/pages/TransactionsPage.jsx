@@ -5,6 +5,7 @@ import { fetchTransactions } from "../api/transactionsApi"; // Import the functi
 import "../styles/TransactionsPage.css"; // Import the updated CSS
 
 import { sortTransactionsByDate } from "../utils/sortTransactions";
+import { FaEdit } from "react-icons/fa";
 
 
 
@@ -38,6 +39,9 @@ const TransactionsPage = () => {
       >
         Add Transaction
       </button>
+
+      <div className="table-container">
+
       <table>
         <thead>
           <tr>
@@ -62,13 +66,15 @@ const TransactionsPage = () => {
                     navigate(`/edit-transaction/${transaction._id}`)
                   }
                 >
-                  Edit
+                  {/* Edit */}
+                  <FaEdit /> {/* This replaces text with the edit icon */}
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
