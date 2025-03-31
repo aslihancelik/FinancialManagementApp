@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountList from "./AccountList";
 import { fetchAccounts } from "./api";
+import { Link } from "react-router-dom"; 
 
 const Wallet = () => {
   const [accounts, setAccounts] = useState([]);
@@ -15,7 +16,7 @@ const Wallet = () => {
 
     if (!token) {
       console.error("No token found, redirecting to login...");
-      navigate("/login");
+      navigate("/login"), 0;
       return;
     }
 
@@ -44,9 +45,13 @@ const Wallet = () => {
 
   return (
     <div className="wallet-container">
-      <h1>Wallet</h1>
-      <button onClick={() => navigate("/wallet/LinkCard")}>Add New Card</button>
-      <button onClick={() => navigate("/wallet/LinkedAccounts")}>Link New Account</button> 
+      <h1> 💵 Wallet</h1>
+      <button onClick={() => navigate("/wallet/LinkCard")}>
+        💳 Add New Card
+      </button>
+      <button onClick={() => navigate("/wallet/LinkedAccounts")}>
+        🏦 Link New Account
+      </button>
     </div>
   );
 };

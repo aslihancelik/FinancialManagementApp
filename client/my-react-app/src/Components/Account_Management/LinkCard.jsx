@@ -111,7 +111,7 @@ const LinkCard = () => {
       console.log(" Card linked successfully:", response);
       alert("Card linked successfully!");
     } catch (error) {
-      console.error("❌ Error linking card:", error);
+      console.error(" Error linking card:", error);
       alert(error.message || "Failed to link card.");
     }
   }

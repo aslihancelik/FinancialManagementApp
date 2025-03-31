@@ -120,8 +120,6 @@ const LinkedAccounts = () => {
 
   return (
     <div className="container">
-      <h1>Linked Accounts</h1>
-
       {/*  Display error message */}
       {error && <div className="error-message">{error}</div>}
 
@@ -150,18 +148,18 @@ const LinkedAccounts = () => {
             placeholder="Enter account number"
           />
         </div>
-        <button type="submit" >Link Account</button>
+        <button type="submit">Link Account</button>
+        <h1>Linked Accounts</h1>
       </form>
 
       {/*  Show loading spinner */}
       {loading ? (
         <p>Loading linked accounts...</p>
-      ) :linkedAccounts.length ? (
-             <AccountList accounts={linkedAccounts} />
-          ) : (
-            <p> No linked accounts found.</p>
-          )}
-        
+      ) : linkedAccounts.length ? (
+        <AccountList accounts={linkedAccounts} />
+      ) : (
+        <p> No linked accounts found.</p>
+      )}
     </div>
   );
 };
