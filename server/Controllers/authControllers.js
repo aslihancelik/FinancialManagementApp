@@ -9,10 +9,10 @@ const generateToken = (res, id) => {
 
   // ✅ Set JWT as HttpOnly Cookie
   res.cookie("jwt", token, {
-    httpOnly: true, // Prevents access from JavaScript (more secure)
-    secure: process.env.NODE_ENV === "production", // Secure in production
-    sameSite: "strict", // Prevents CSRF attacks
-    maxAge: 30 * 24 * 60 * 60 * 1000, // Expires in 30 days
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
   return token;
@@ -32,10 +32,8 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // ✅ Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Create User
     const user = await User.create({
       firstName,
       lastName,
@@ -44,14 +42,14 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
-      const token = generateToken(res, user._id); // ✅ Set JWT cookie
+      const token = generateToken(res, user._id);
 
       res.status(201).json({
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        token, // ✅ Send token in response (for frontend storage)
+        token,
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });
@@ -75,16 +73,15 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    // ✅ Compare Passwords
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = generateToken(res, user._id); // ✅ Set JWT cookie
+      const token = generateToken(res, user._id);
 
       res.status(200).json({
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        token, // ✅ Send token in response
+        token,
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
@@ -153,6 +150,7 @@ const logoutUser = (req, res) => {
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
+
 
 module.exports = {
   getUserProfile,

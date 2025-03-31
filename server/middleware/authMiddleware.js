@@ -1,3 +1,4 @@
+// middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 require("dotenv").config();
@@ -20,11 +21,9 @@ const protect = async (req, res, next) => {
         .json({ message: "Access denied: No token provided" });
     }
 
-    // ✅ Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("🔹 Decoded Token:", decoded); // Debugging
 
-    // ✅ Check if User Exists in Database
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {

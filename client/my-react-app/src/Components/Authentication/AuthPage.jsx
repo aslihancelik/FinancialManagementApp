@@ -1,9 +1,8 @@
 import { useState } from "react";
 //import { signup, login, linkAccount } from "../../api/auth"; // Import API calls
- import { signup, login} from "../../api/auth"; // Import API calls
+import { signup, login } from "../../api/auth"; // Import API calls
 import { useAuth } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
-
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup

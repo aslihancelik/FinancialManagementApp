@@ -45,7 +45,7 @@ export const signup = async (userData) => {
   }
 };
 
-// ✅ Login Function
+// ✅ Login Function (No changes needed for login functionality, but ensure backend sends firstName and lastName)
 export const login = async (credentials) => {
   try {
     console.log("🔹 Logging in with:", credentials);
@@ -63,7 +63,6 @@ export const login = async (credentials) => {
     throw new Error(error.response?.data?.message || "Login failed");
   }
 };
-
 
 export const getUser = async () => {
   try {
@@ -87,13 +86,12 @@ export const getUser = async () => {
       return null;
     }
 
+    // Enhanced error message
     throw new Error(
       error.response?.data?.message || "Failed to fetch user data"
     );
   }
 };
-
-
 
 
 //export const linkAccount = async (accountData) => {

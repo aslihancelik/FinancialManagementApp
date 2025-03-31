@@ -1,31 +1,19 @@
-// const express = require("express");
-// const {
-//   createGoal,
-//   getGoals,
-//   updateGoal,
-//   getGoalProgress,
-//   deleteGoal,
-// } = require("../Controllers/goalControllers");//  Import goal controllers 
+const express = require("express");
+const {
+  createGoal,
+  getGoalsById,
+  updateGoal,
+  getGoalProgress,
+  deleteGoal,
+} = require("../Controllers/goalControllers"); //  Import goal controllers
+const protect = require("../middleware/authMiddleware"); // Import the protect middleware
 
-// // Validate imported functions
-// if (
-//   !createGoal ||
-//   !getGoals ||
-//   !updateGoal ||
-//   !getGoalProgress ||
-//   !deleteGoal
-// ) {
-//   throw new Error("One or more goal controller functions are undefined. Check the exports in '../Controllers/goalControllers'.");
-// }
+const router = express.Router(); // ✅ Goal Routes
 
-// const { protect } = require("../middleware/authMiddleware"); // Import the protect middleware
+router.post("/", protect, createGoal); // ✅ Create a goal
+router.get("/:id", protect, getGoalsById); // ✅ Fetch user's goals
+router.put("/:id", protect, updateGoal); // ✅ Update goal progress
+router.get("/:id/progress", protect, getGoalProgress); // ✅ Get goal progress
+router.delete("/:id", protect, deleteGoal); // ✅ Delete a goal
 
-// const router = express.Router(); // ✅ Goal Routes
-
-// router.post("/", protect, createGoal); // ✅ Create a goal
-// router.get("/", protect, getGoals); // ✅ Fetch user's goals
-// router.put("/:id", protect, updateGoal);// ✅ Update goal progress
-// router.get("/:id/progress", protect, getGoalProgress);// ✅ Get goal progress
-// router.delete("/:id", protect, deleteGoal); // ✅ Delete a goal
-
-// module.exports = router;
+module.exports = router;

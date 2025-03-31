@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const goalRoutes = require("./routes/goalroutes");
 const authRoutes = require("./routes/authRoutes");
+const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
 const accountRoutes = require("./routes/account_routes"); // Adjust the path as needed
 
 // Load Environment variables from .env file
@@ -42,13 +43,14 @@ app.use(
 );
 
 // ✅ API Routes
-app.use("/api/auth", authRoutes); // ✅ Authentication Routes
-// app.use("/api/goals", goalRoutes); // ✅ Goals Routes
+app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/goals", goalRoutes); // Goals routes
+app.use("/bills", createBillRoutes);
 app.use("/api", accountRoutes);   //Account Routes
 
-// ✅ Test Route
+// ✅ Test route
 app.get("/", (req, res) => {
-  res.send("Server is running!");
+  res.send("✅ Server is running!");
 });
 
 // ✅ Global Error Handling Middleware
