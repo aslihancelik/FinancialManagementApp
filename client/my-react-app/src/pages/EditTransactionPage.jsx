@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchTransactionById,
   updateTransaction,
+  deleteTransaction,
 } from "../api/transactionsApi";
 import "../styles/EditTransactionPage.css";
 
@@ -71,6 +72,21 @@ const handleFormSubmit = async (e) => {
   }
 };
 
+const handleDelete = async () => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this transaction?"
+  );
+  if (confirmDelete) {
+    try {
+      await deleteTransaction(id);
+      console.log("🗑 Transaction deleted!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  }
+};
+
 
   if (loading) {
     return <div>Loading...</div>; // Display a loading state while fetching
@@ -118,6 +134,9 @@ const handleFormSubmit = async (e) => {
         />
       </label>
       <button type="submit">Save Changes</button>
+      <button type="button" className="delete-button" onClick={handleDelete}>
+        Delete Transaction
+      </button>
     </form>
   );
 };

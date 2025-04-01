@@ -64,3 +64,18 @@ tr:nth-child(even) {
   background-color: #7e7975; /* Darker beige on hover */
 }
 
+.delete-button {
+  background-color: #d9534f; /* Red button */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
+}
