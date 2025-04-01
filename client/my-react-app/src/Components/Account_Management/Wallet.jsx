@@ -52,6 +52,11 @@ const Wallet = () => {
       <button onClick={() => navigate("/wallet/LinkedAccounts")}>
         🏦 Link New Account
       </button>
+      {/* Display the linked accounts */}
+      <div className="linked-accounts-section">
+        <h2>🔗 Linked Accounts</h2>
+        <AccountList accounts={accounts} />
+      </div>
     </div>
   );
 };
