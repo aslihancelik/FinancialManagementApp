@@ -1,47 +1,89 @@
-//only command to run after getting all this to your branch is: npm i , and make sure you run this while you are in server folder
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
- const dotenv = require("dotenv");
- const bodyParser = require("body-parser");
- const transactionRoutes = require("./routes/transactionsRoutes");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const goalRoutes = require("./Routes/goalRoutes");
+const authRoutes = require("./routes/authRoutes");
+const createBillRoutes = require("./routes/bills_routes"); // <-- Import bills routes
+const accountRoutes = require("./routes/account_routes"); // Adjust the path as needed
+const transactionRoutes = require("./routes/transactionsRoutes");
 
+// Load Environment variables from .env file
+dotenv.config();
 
+// Function to check for required environment variables
+const checkEnvVars = (vars) => {
+  vars.forEach((envVar) => {
+    if (!process.env[envVar]) {
+      console.error(`❌ Missing required environment variable: ${envVar}`);
+      process.exit(1); // Exit the app if a required environment variable is missing
+    }
+  });
+};
+
+// Check required environment variables early in the application lifecycle
+checkEnvVars(["DB_URL", "DBNAME", "JWT_SECRET"]);
+
+// Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-//middleware to parse incoming JSON requests
-app.use(bodyParser.json());
-
+const PORT = process.env.PORT || 3000; // Default to port 3000 if not set
+const DBNAME = process.env.DBNAME; // Database name
+const DB_URL = process.env.DB_URL; // Base database URL
 
 
-// Enable CORS for all origins
-// app.use(cors());
+// ✅ Middleware
+app.use(express.json()); // Express built-in JSON parser (replaces body-parser.json())
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true })); // Enables form data parsing
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5174", // Allow frontend requests
+    credentials: true,
+  })
+);
 
-// Optionally, restrict allowed origins
-app.use(cors({
-    origin: "http://localhost:5173", // Allow requests only from your frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    credentials: true, // Allow cookies and authorization headers if needed
-}));
-
-
-//use the transaction routes
+// ✅ API Routes
+app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/goals", goalRoutes); // Goals routes
+app.use("/bills", createBillRoutes);
+app.use("/api", accountRoutes);   //Account Routes
 app.use("/api", transactionRoutes);
 
-//connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/financialApp", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => {
-    console.log("connected to MongoDB");
-})
-.catch((error) => {
-    console.log("error connecting to MongoDB", error);
+// ✅ Test route
+app.get("/", (req, res) => {
+  res.send("✅ Server is running!");
 });
-//start the server
+
+// ✅ Global Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error("❌ Error:", err);
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({ message });
+});
+
+// Connect to MongoDB
+const MONGO_URI = DB_URL + DBNAME; // Combine DB URL and name
+mongoose
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log(`✅ Connected to MongoDB: ${DBNAME}`))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+
+
+// ✅ Graceful Shutdown on SIGINT (Ctrl+C)
+process.on("SIGINT", () => {
+  console.log("🚶‍♂️ Shutting down gracefully...");
+  mongoose.connection.close(() => {
+    console.log("✅ MongoDB connection closed");
+    process.exit(0);
+  });
+});
+
+
+// ✅ Start Server
 app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-})
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
+
