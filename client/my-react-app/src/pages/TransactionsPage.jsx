@@ -7,9 +7,6 @@ import "../styles/TransactionsPage.css"; // Import the updated CSS
 import { sortTransactionsByDate } from "../utils/sortTransactions";
 import { FaEdit } from "react-icons/fa";
 
-
-
-
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
@@ -41,40 +38,41 @@ const TransactionsPage = () => {
       </button>
 
       <div className="table-container">
-
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* {transactions.map((transaction) => ( */}
-          {sortedTransactions.map((transaction) => (
-            <tr key={transaction._id}>
-              <td>{new Date(transaction.date).toISOString().split("T")[0]}</td>
-              <td>{transaction.category}</td>
-              <td>${transaction.amount}</td>
-              <td>{transaction.description}</td>
-              <td>
-                <button
-                  className="edit-button"
-                  onClick={() =>
-                    navigate(`/edit-transaction/${transaction._id}`)
-                  }
-                >
-                  {/* Edit */}
-                  <FaEdit /> {/* This replaces text with the edit icon */}
-                </button>
-              </td>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Description</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {/* {transactions.map((transaction) => ( */}
+            {sortedTransactions.map((transaction) => (
+              <tr key={transaction._id}>
+                <td>
+                  {new Date(transaction.date).toISOString().split("T")[0]}
+                </td>
+                <td>{transaction.category}</td>
+                <td>${transaction.amount}</td>
+                <td>{transaction.description}</td>
+                <td>
+                  <button
+                    className="edit-button"
+                    onClick={() =>
+                      navigate(`/edit-transaction/${transaction._id}`)
+                    }
+                  >
+                    {/* Edit */}
+                    <FaEdit /> {/* This replaces text with the edit icon */}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
