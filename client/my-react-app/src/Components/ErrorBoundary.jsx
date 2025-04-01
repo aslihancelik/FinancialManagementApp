@@ -1,22 +1,22 @@
 import { Component } from "react";
 import {Link } from "react-router-dom"; // Optional: link back to home page for users to retry
 
-class ErrorBoundary extends Component {
- constructor(props) {
-    super(props);
-    this.state = { hasError: false, errorMessage: "" };
+class ErrorBoundary extends Component { // ErrorBoundary component
+  constructor(props) { // Constructor with props
+    super(props); // Call super with props
+    this.state = { hasError: false, errorMessage: "" }; // Set initial state
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error) { // getDerivedStateFromError method
     return { hasError: true, errorMessage: error.message }; // Capture the error message
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error, errorInfo) {  // componentDidCatch method
     console.error("Error caught by ErrorBoundary:", error, errorInfo);
     // You can send error info to an external logging service here
   }
 
-  render() {
+  render() {  
     if (this.state.hasError) {
       return (
         <div>

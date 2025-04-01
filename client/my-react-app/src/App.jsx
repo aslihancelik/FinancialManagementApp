@@ -10,13 +10,14 @@ import LinkedAccounts from "./components/Account_Management/LinkedAccounts";
 import Login from "./components/Authentication/login";
 import Dashboard from "./pages/Dashboard";
 import ErrorBoundary from "./components/ErrorBoundary";
+import BillsPage from "./Pages/BillsPage";
+import SavingsGoalsPage from "../src/Pages/SavingsGoalPage"; // Corrected path
 
 const App = () => {
   return (
     <AuthProvider>
       <ErrorBoundary>
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<AuthPage />} />
           <Route path="/login" element={<Login />} />
 
@@ -26,6 +27,22 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bills"
+            element={
+              <ProtectedRoute>
+                <BillsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/savings-goals"
+            element={
+              <ProtectedRoute>
+                <SavingsGoalsPage />
               </ProtectedRoute>
             }
           />

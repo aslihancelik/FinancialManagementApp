@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import AccountList from "./AccountList";
 import api from "./api";
+import { Link } from "react-router-dom";
 
 const API_URL = "http://localhost:3000/api";
 
@@ -149,18 +150,15 @@ const LinkedAccounts = () => {
           />
         </div>
         <button type="submit">Link Account</button>
-        <h1>🔗 Linked Accounts</h1>
+        
       </form>
 
-      {/*  Show loading spinner */}
-      {loading ? (
-        <p>Loading linked accounts...</p>
-      ) : linkedAccounts.length ? (
-        <AccountList accounts={linkedAccounts} />
-      ) : (
-        <p> No linked accounts found.</p>
-      )}
-      
+      {/* Navigation Links */}
+      <div className="navigation-links">
+        <Link to="/dashboard/wallet">🏠 Dashboard</Link>
+        <Link to="/bills">📋 Bills</Link>
+        <Link to="/savings-goals">💰 Goals</Link>
+      </div>
     </div>
   );
 };

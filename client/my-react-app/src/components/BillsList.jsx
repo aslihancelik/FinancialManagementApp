@@ -1,5 +1,5 @@
-import React from 'react';
-import { format } from 'date-fns'; // Optional, for custom date formatting
+// import React from 'react';
+import { format, isValid } from 'date-fns';
 
 const BillList = ({ bills, onEdit, onDelete }) => {
   return (
@@ -21,22 +21,29 @@ const BillList = ({ bills, onEdit, onDelete }) => {
               <td colSpan="5">No bills available</td>
             </tr>
           ) : (
-            bills.map((bill) => (
-              <tr key={bill.id}>
-                <td>{bill.name}</td>
-                <td>${bill.amount}</td>
-                <td>{format(new Date(bill.dueDate), 'MM/dd/yyyy')}</td> {/* Custom Date Format */}
-                <td>{bill.frequency}</td>
-                <td>
-                  <button onClick={() => onEdit(bill)} aria-label={`Edit ${bill.name} bill`}>
-                    Edit
-                  </button>
-                  <button onClick={() => onDelete(bill.id)} aria-label={`Delete ${bill.name} bill`}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
+            bills.map((bill) => {
+              const dueDate = bill.dueDate ? new Date(bill.dueDate) : null;
+              const formattedDate = dueDate && isValid(dueDate)
+                ? format(dueDate, 'MM/dd/yyyy')
+                : 'N/A';
+
+              return (
+                <tr key={bill.id}>
+                  <td>{bill.name}</td>
+                  <td>${bill.amountDue}</td>
+                  <td>{formattedDate}</td>
+                  <td>{bill.frequency}</td>
+                  <td>
+                    <button onClick={() => onEdit(bill)} aria-label={`Edit ${bill.name} bill`}>
+                      Edit
+                    </button>
+                    <button onClick={() => onDelete(bill.id)} aria-label={`Delete ${bill.name} bill`}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
@@ -45,5 +52,3 @@ const BillList = ({ bills, onEdit, onDelete }) => {
 };
 
 export default BillList;
-
-

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 const LinkCard = () => {
   const API_URL = "http://localhost:3000/api"; // Ensure this URL is defined
 
@@ -164,6 +164,12 @@ const LinkCard = () => {
           Confirm
         </button>
       </form>
+      {/* Navigation Links */}
+      <div className="navigation-links">
+        <Link to="/dashboard/wallet">🏠 Dashboard</Link>
+        <Link to="/bills">📋 Bills</Link>
+        <Link to="/savings-goals">💰 Goals</Link>
+      </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getUser } from "../api/auth"; // Ensure getUser function is correctly defined
 
-const AuthContext = createContext();
+const AuthContext = createContext(); 
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null); // Track if there's an error fetching the user
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUser = async () => { 
       const token = localStorage.getItem("authToken");
 
       if (!token) {
@@ -44,10 +44,11 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser}}> 
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Custom hook
 export const useAuth = () => useContext(AuthContext);

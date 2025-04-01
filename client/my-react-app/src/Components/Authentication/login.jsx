@@ -3,28 +3,28 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 import { useAuth } from "../../Context/authContext";
 
-const Login = () => {
-  const [formData, setFormData] = useState({
+const Login = () => { 
+  const [formData, setFormData] = useState({ //  Fixed formData state
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); //  Fixed error state
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const handleChange = (e) => {
+  const handleChange = (e) => { 
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // ✅ Fixed capitalization issue
+  const handleSubmit = async (e) => { 
+    e.preventDefault(); 
 
     try {
       const user = await login(formData);
       setUser(user);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login Failed"); // ✅ Fixed error variable
+      setError(err.response?.data?.message || "Login Failed"); //  Fixed error variable
     }
   };
 
