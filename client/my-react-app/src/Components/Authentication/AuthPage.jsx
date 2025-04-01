@@ -1,4 +1,5 @@
 import { useState } from "react";
+//import { signup, login, linkAccount } from "../../api/auth"; // Import API calls
 import { signup, login } from "../../api/auth"; // Import API calls
 import { useAuth } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -6,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login/signup
   const [formData, setFormData] = useState({
-    firstName: "", 
-    lastName: "", 
     email: "",
     password: "",
+    name: "",
     confirmPassword: "",
   });
   const { setUser } = useAuth();
@@ -24,11 +24,9 @@ const AuthPage = () => {
       return "Email and password are required.";
     if (
       !isLogin &&
-      (!formData.firstName ||
-        !formData.lastName ||
-        formData.password !== formData.confirmPassword)
+      (!formData.name || formData.password !== formData.confirmPassword)
     )
-      return "First Name, Last Name, and passwords must be filled out correctly.";
+      return "Passwords do not match or name is missing.";
     return null;
   };
 
@@ -48,33 +46,68 @@ const AuthPage = () => {
           password: formData.password,
         });
       } else {
+        // Split the name into firstName and lastName
+        const nameParts = formData.name.trim().split(" ");
+
+        const firstName = nameParts[0];
+        const lastName =
+          nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
         response = await signup({
-          firstName: formData.firstName, 
-          lastName: formData.lastName, 
+          firstName, // Send split first name
+          lastName, // Send split last name
           email: formData.email,
           password: formData.password,
         });
       }
 
-      // Ensure token is stored properly
-      if (response.token) {
-        localStorage.setItem("authToken", response.token);
-      } else {
-        throw new Error("Token not received from server.");
-      }
-
-      // Store user details correctly
+      // ✅ Fix: Store user details correctly
       setUser({
         id: response.id,
-        firstName: response.firstName, 
-        lastName: response.lastName, 
+        firstName: response.firstName,
+        lastName: response.lastName,
         email: response.email,
       });
 
       navigate("/dashboard"); // Redirect after login/signup
     } catch (error) {
-      console.error(error);
+      console.error("❌ Error during authentication:", error);
       alert(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+
+  // Separate test function to call `linkAccount`
+  const handleLinkAccountTest = async () => {
+    try {
+      // Hardcoded test data for linking an account
+      // const accountData = {
+      //   name: "Ari Account",
+      //   type: "bank account",
+      //   balance: 1000,
+      //   bankAccount: {
+      //     accountNumber: "123457777",
+      //     routingNumber: "987657777",
+      //   },
+      // };
+
+      // Hardcoded test data for linking a credit card account
+      // const accountData = {
+      //   name: "Aria Ela Test",
+      //   type: "credit card",
+      //   balance: 5000,
+      //   creditCard: {
+      //     number: "4111111111111111", // Example credit card number
+      //     expDate: "12/25", // Expiration date
+      //     cvc: "123", // CVC code
+      //   },
+      //};
+
+      const response = await linkAccount(accountData); // Call the linkAccount function
+      console.log("✅ Test account linked successfully:", response);
+      alert("Test account linked successfully!");
+    } catch (error) {
+      console.error("❌ Error linking test account:", error);
+      alert(error.message || "Failed to link test account.");
     }
   };
 
@@ -83,24 +116,14 @@ const AuthPage = () => {
       <h2>{isLogin ? "Login" : "Sign Up"}</h2>
       <form onSubmit={handleSubmit}>
         {!isLogin && (
-          <>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              required={!isLogin}
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required={!isLogin}
-            />
-          </>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name" // ✅ Change 'Username' to 'Name' to match backend
+            value={formData.name}
+            onChange={handleChange}
+            required={!isLogin}
+          />
         )}
         <input
           type="email"
@@ -118,7 +141,7 @@ const AuthPage = () => {
           onChange={handleChange}
           required
         />
-        {/* Added Confirm Password Field for Signup */}
+        {/* ✅ Added Confirm Password Field for Signup */}
         {!isLogin && (
           <input
             type="password"
@@ -137,6 +160,8 @@ const AuthPage = () => {
           {isLogin ? "Sign Up" : "Login"}
         </button>
       </p>
+      {/* Button to test linking an account */}
+      {/* <button onClick={handleLinkAccountTest}>Test Link Account</button> */}
     </div>
   );
 };

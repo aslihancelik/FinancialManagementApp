@@ -1,7 +1,7 @@
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
+const User = require("../models/user"); // Import User model
+const jwt = require("jsonwebtoken"); // Import jwt for token generation
+const bcrypt = require("bcryptjs"); // Import bcrypt for password hashing
+require("dotenv").config(); // Load environment variables
 
 // ✅ Generate JWT Token and store in a cookie
 const generateToken = (res, id) => {
@@ -19,7 +19,7 @@ const generateToken = (res, id) => {
 };
 
 // ✅ Register User (Signup)
-exports.registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
 
@@ -61,7 +61,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // ✅ Login User
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -93,7 +93,7 @@ exports.loginUser = async (req, res) => {
 };
 
 // ✅ Get Logged-in User Profile (Protected)
-exports.getUserProfile = async (req, res) => {
+const getUserProfile = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized: No user found" });
@@ -111,8 +111,39 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
+// ✅ Update User Profile (PUT)
+const updateUserProfile = async (req, res) => {
+  try {
+    const { firstName, lastName, email } = req.body; // Get data to update
+
+    if (!firstName || !lastName || !email) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const user = req.user; // Authenticated user from the middleware
+
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+
+    await user.save(); // Save the updated user data
+
+    res.status(200).json({
+      message: "User profile updated successfully",
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating user profile", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // ✅ Logout User (Clear Cookie)
-exports.logoutUser = (req, res) => {
+const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -120,35 +151,15 @@ exports.logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-// update user profile
-exports.updateUserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+module.exports = {
+  getUserProfile,
 
-    // Update only the fields provided
-    user.firstName = req.body.firstName || user.firstName;
-    user.lastName = req.body.lastName || user.lastName;
-    user.email = req.body.email || user.email;
+  loginUser,
 
-    if (req.body.password) {
-      user.password = await bcrypt.hash(req.body.password, 10);
-    }
+  registerUser,
 
-    const updatedUser = await user.save();
+  logoutUser,
 
-    res.status(200).json({
-      id: updatedUser._id,
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-    });
-  } catch (error) {
-    console.error("Update User Profile Error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
+  updateUserProfile,
 };
-

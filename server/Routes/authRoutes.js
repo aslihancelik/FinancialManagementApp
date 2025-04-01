@@ -1,24 +1,24 @@
+// routes/authRoutes.js
 const express = require("express");
+const router = express.Router();
 const {
   getUserProfile,
   loginUser,
   registerUser,
-  updateUserProfile,
   logoutUser,
-} = require("../Controllers/authControllers");
-const authenticateUser = require("../middleware/authMiddleware");
+  updateUserProfile,
+} = require("../Controllers/authControllers"); // Ensure functions are imported correctly
+const protect = require("../middleware/authMiddleware"); // Protect middleware for authentication
 
-const router = express.Router();
-console.log("🔍 getUserProfile:", typeof getUserProfile);
+// Route to get the logged-in user's profile (GET request)
+router.get("/me", protect, getUserProfile); // Correctly using the getUserProfile function
+ 
+// Route to update the logged-in user's profile (PUT request)
+router.put("/me", protect, updateUserProfile); // Correctly using the updateUserProfile function
 
+// Other routes for registration and login
+router.post("/signup", registerUser); // POST route to register a user
+router.post("/login", loginUser); // POST route to login a user
+router.post("/logout", logoutUser); // POST route to logout
 
-// ✅ Authentication Routes
-//pubic Routes
-router.post("/signup", registerUser); // Register User
-router.post("/login", loginUser); // Login User
-
-//proetected Routes
-router.get("/me", authenticateUser, getUserProfile); // Get User Profile (Protected)
-router.put("/me", authenticateUser, updateUserProfile); // Update User Profile (Protected)
-router.post("/logout", authenticateUser, logoutUser); // Logout User (Clear Cookie)
 module.exports = router;

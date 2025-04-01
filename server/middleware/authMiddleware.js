@@ -3,18 +3,16 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 require("dotenv").config();
 
-const authenticateUser = async (req, res, next) => {
+const protect = async (req, res, next) => {
   try {
     let token;
 
-    console.log("Authorization Header:", req.headers.authorization);
-
+    // ✅ Check if Authorization header exists and is formatted correctly
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
-      console.log("Extracted Token:", token);
     }
 
     if (!token) {
@@ -24,10 +22,9 @@ const authenticateUser = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Token:", decoded);
+    console.log("🔹 Decoded Token:", decoded); // Debugging
 
     const user = await User.findById(decoded.id).select("-password");
-    console.log("Authenticated User:", user);
 
     if (!user) {
       return res
@@ -35,12 +32,13 @@ const authenticateUser = async (req, res, next) => {
         .json({ message: "User not found, authentication failed" });
     }
 
+    // ✅ Attach user to the request object
     req.user = user;
-    next();
+
+    next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.error("Auth Middleware Error:", error);
     res.status(401).json({ message: "Authentication failed" });
   }
 };
-
-module.exports = authenticateUser; // ✅ Default export
+module.exports = protect;

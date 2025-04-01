@@ -3,17 +3,17 @@ const {
   createGoal,
   getGoalsById,
   updateGoal,
-  getGoalProgress, 
+  getGoalProgress,
   deleteGoal,
-} = require("../Controllers/goalControllers");//  Import goal controllers 
-const protect  = require("../middleware/authMiddleware"); // Import the protect middleware
+} = require("../Controllers/goalControllers"); //  Import goal controllers
+const protect = require("../middleware/authMiddleware"); // Import the protect middleware
 
 const router = express.Router(); // ✅ Goal Routes
 
 router.post("/", protect, createGoal); // ✅ Create a goal
 router.get("/:id", protect, getGoalsById); // ✅ Fetch user's goals
-router.put("/:id", protect, updateGoal);// ✅ Update goal progress
-router.get("/:id/progress", protect, getGoalProgress);// ✅ Get goal progress
+router.put("/:id", protect, updateGoal); // ✅ Update goal progress
+router.get("/:id/progress", protect, getGoalProgress); // ✅ Get goal progress
 router.delete("/:id", protect, deleteGoal); // ✅ Delete a goal
 
 module.exports = router;

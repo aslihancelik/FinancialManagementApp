@@ -1,25 +1,27 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom"; // You don't need to import Router here anymore
 import { AuthProvider } from "./Context/authContext";
-import Dashboard from "./Pages/Dashboard";
-import ProtectedRoute from "./Components/Authentication/ProtectedRoute";
-import AuthPage from "../src/Components/Authentication/AuthPage"; // Corrected path
+import ProtectedRoute from "./components/Authentication/protectedRoute";
+import AuthPage from "./components/Authentication/AuthPage";
+import Wallet from "./components/Account_Management/Wallet";
+import LinkCard from "./components/Account_Management/LinkCard";
+import SavedCards from "./components/Account_Management/SavedCards";
+import LinkedAccounts from "./components/Account_Management/LinkedAccounts";
+import Login from "./components/Authentication/login";
+import Dashboard from "./pages/Dashboard";
+import ErrorBoundary from "./components/ErrorBoundary";
 import BillsPage from "./Pages/BillsPage";
 import SavingsGoalsPage from "../src/Pages/SavingsGoalPage"; // Corrected path
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <ErrorBoundary>
         <Routes>
-          {/* Public route */}
           <Route path="/" element={<AuthPage />} />
+          <Route path="/login" element={<Login />} />
 
-          {/* Protected routes */}
+          {/* Protected route for dashboard */}
           <Route
             path="/dashboard"
             element={
@@ -44,8 +46,41 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/dashboard/wallet"
+            element={
+              <ProtectedRoute>
+                <Wallet />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/wallet/SavedCard"
+            element={
+              <ProtectedRoute>
+                <SavedCards />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wallet/LinkedAccounts"
+            element={
+              <ProtectedRoute>
+                <LinkedAccounts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wallet/LinkCard"
+            element={
+              <ProtectedRoute>
+                <LinkCard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
-      </Router>
+      </ErrorBoundary>
     </AuthProvider>
   );
 };

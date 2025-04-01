@@ -1,14 +1,11 @@
-import { useAuth } from "../Context/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/authContext"; // Corrected path
+import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
+import Wallet from "../components/Account_Management/Wallet";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+  const { user } = useAuth(); // Access user data from context
 
   return (
     <div
@@ -33,10 +30,10 @@ const Dashboard = () => {
         }}
       >
         <nav style={{ display: "flex", justifyContent: "space-around" }}>
-          <Link to="/dashboard">🏠 Dashboard</Link>
+          <Link to="/dashboard/wallet">🏠 Dashboard</Link>
           <Link to="/bills">📋 Bills</Link>
           <Link to="/savings-goals">💰 Goals</Link>
-          <button
+          {/* <button
             onClick={handleLogout}
             style={{
               border: "none",
@@ -45,8 +42,8 @@ const Dashboard = () => {
               cursor: "pointer",
             }}
           >
-            🚪 Logout
-          </button>
+            🚪 Logout */}
+          {/* </button> */}
         </nav>
       </footer>
     </div>
