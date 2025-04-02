@@ -150,12 +150,13 @@ const LinkedAccounts = () => {
           />
         </div>
         <button type="submit">Link Account</button>
-        
       </form>
 
       {/* Navigation Links */}
       <div className="navigation-links">
-        <Link to="/dashboard/wallet">🏠 Dashboard</Link>
+        <Link to="/dashboard">🏠 Dashboard</Link>
+        <Link to="/dashboard/wallet">💳 Wallet</Link>
+        <Link to="/transactions">💲Transactions</Link>
         <Link to="/bills">📋 Bills</Link>
         <Link to="/savings-goals">💰 Goals</Link>
       </div>

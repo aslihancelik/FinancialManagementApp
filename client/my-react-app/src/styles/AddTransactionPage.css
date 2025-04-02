@@ -1,5 +1,6 @@
 /* Center the form container */
-body {
+.transaction {
+  /* body{ */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +12,8 @@ body {
 }
 
 /* Form container styling */
-form {
+.transaction-form {
+  /* form{ */
   background-color: #1a1a1a; /* Dark background */
   padding: 30px;
   border-radius: 10px;
@@ -24,18 +26,19 @@ form {
 }
 
 /* Form labels */
-label {
+/* label { */
+.transaction-label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #bfb59d; /* Beige for labels */
+  color: #bfb59d; /* Beige for labels #bfb59d*/
   width: 100%; /* Ensure labels are aligned */
   text-align: left; /* Align labels to the left */
 }
 
 /* Center text within inputs and buttons */
-input,
-textarea,
-button {
+.transaction-input,
+.transaction-textarea,
+.transaction-button {
   background-color: #2b2b2b; /* Input background */
   color: #ffffff; /* Light text */
   border: 1px solid #444444; /* Subtle border */
@@ -47,21 +50,22 @@ button {
 }
 
 /* Disable the textarea (description box) */
-textarea {
+.transaction-textarea {
   resize: none; /* Prevent resizing */
   pointer-events: none; /* Disable manual edits */
 }
 
 /* Focus styles for inputs and textareas */
-input:focus,
-textarea:focus {
+.transaction-input:focus,
+.transaction-textarea:focus {
   outline: none;
   border-color: #bfb59d; /* Highlight border on focus */
 }
 
 /* Submit button styling */
-button {
-  background-color: #bfb59d; /* Beige button */
+/* button { */
+.transaction-button {
+  background-color: #ffcc00; /* Beige button */
   color: #000000; /* Black text */
   cursor: pointer;
   border: none;
@@ -71,10 +75,11 @@ button {
   text-align: center; /* Center the button text */
 }
 
-button:hover {
+.transaction-button:hover {
   background-color: #9c8f7b; /* Darker beige on hover */
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* input[type="date"]::-webkit-calendar-picker-indicator { */
+.transaction-date::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Makes the calendar icon visible on the background */
 }

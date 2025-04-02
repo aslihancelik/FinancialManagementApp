@@ -49,73 +49,70 @@ const LinkCard = () => {
       setErrorMessage(""); // Clear any previous error
     }
   };
-    // Create Axios instance for centralized API calls
-    const apiClient = axios.create({
-      baseURL: API_URL,
-    });
+  // Create Axios instance for centralized API calls
+  const apiClient = axios.create({
+    baseURL: API_URL,
+  });
 
-    //  Add Axios interceptor to include the Authorization header
-    apiClient.interceptors.request.use(
-      (config) => {
-        const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`; // Attach token automatically
-        }
-        return config; // Proceed with the request
-      },
-      (error) => {
-        console.error(" Interceptor error:", error);
-        return Promise.reject(error);
+  //  Add Axios interceptor to include the Authorization header
+  apiClient.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`; // Attach token automatically
       }
-    );
+      return config; // Proceed with the request
+    },
+    (error) => {
+      console.error(" Interceptor error:", error);
+      return Promise.reject(error);
+    }
+  );
 
-    const LinkCard = async (accountData) => {
-      try {
-        console.log(" Sending card data to the backend:", accountData);
+  const LinkCard = async (accountData) => {
+    try {
+      console.log(" Sending card data to the backend:", accountData);
 
-        // Make the POST request to link the account
-        // const response = await apiClient.post("/accounts", accountData);
-        const response = await apiClient.post(
-          "http://localhost:3000/api/accounts",
-          accountData
-        );
+      // Make the POST request to link the account
+      // const response = await apiClient.post("/accounts", accountData);
+      const response = await apiClient.post(
+        "http://localhost:3000/api/accounts",
+        accountData
+      );
 
-        console.log(" Card linked successfully:", response.data);
-        return response.data; // Return the server response
-      } catch (error) {
-        console.error(
-          " Error linking card:",
-          error.response?.data || error.message
-        );
-        throw new Error(
-          error.response?.data?.message || "Failed to link card"
-        );
-      }
-    };
+      console.log(" Card linked successfully:", response.data);
+      return response.data; // Return the server response
+    } catch (error) {
+      console.error(
+        " Error linking card:",
+        error.response?.data || error.message
+      );
+      throw new Error(error.response?.data?.message || "Failed to link card");
+    }
+  };
 
-       const accountData =  {
-          name: cardData.name,
-          type: "credit card",
-          balance: 0,
-          creditCard: {
-            number: cardData.number,
-            expDate: cardData.expDate,
-            cvc: cardData.cvc,
-          },
-        } 
-    
+  const accountData = {
+    name: cardData.name,
+    type: "credit card",
+    balance: 0,
+    creditCard: {
+      number: cardData.number,
+      expDate: cardData.expDate,
+      cvc: cardData.cvc,
+    },
+  };
 
-    const handleLinkCard = async () => {
-      try {
-          const response = await LinkCard(accountData); // Call the linkCard function
+  const handleLinkCard = async () => {
+    try {
+      const response = await LinkCard(accountData); // Call the linkCard function
       console.log(" Card linked successfully:", response);
       alert("Card linked successfully!");
     } catch (error) {
       console.error(" Error linking card:", error);
       alert(error.message || "Failed to link card.");
     }
-  }
-    
+  };
+
   return (
     <div className="container">
       <h1>Link a New Card</h1>
@@ -166,7 +163,9 @@ const LinkCard = () => {
       </form>
       {/* Navigation Links */}
       <div className="navigation-links">
-        <Link to="/dashboard/wallet">🏠 Dashboard</Link>
+        <Link to="/dashboard">🏠 Dashboard</Link>
+        <Link to="/dashboard/wallet">💳 Wallet</Link>
+        <Link to="/transactions">💲Transactions</Link>
         <Link to="/bills">📋 Bills</Link>
         <Link to="/savings-goals">💰 Goals</Link>
       </div>

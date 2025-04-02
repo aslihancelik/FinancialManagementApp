@@ -10,7 +10,7 @@ const AddTransactionPage = () => {
   const handleFormSubmit = async (data) => {
     try {
       await addTransaction(data); // Use centralized API function
-      navigate("/"); // Redirect to Transactions page
+      navigate("/transactions"); // Redirect to Transactions page
     } catch (error) {
       console.error("Error adding transaction:", error);
     }

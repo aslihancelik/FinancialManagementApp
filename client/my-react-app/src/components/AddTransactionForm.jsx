@@ -20,48 +20,56 @@ const AddTransactionForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>New Transaction</h1>
-      <label>
-        Amount:
-        <input
-          type="number"
-          name="amount"
-          value={formData.amount}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <label>
-        Category:
-        <input
-          type="text"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <label>
-        Description:
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        ></textarea>
-      </label>
-      <label>
-        Date:
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <button type="submit">Add Transaction</button>
-    </form>
+    <div className="transaction">
+      <form className="transaction-form" onSubmit={handleSubmit}>
+        <h1>New Transaction</h1>
+        <label className="transaction-label">
+          Amount:
+          <input
+            type="number"
+            name="amount"
+            className="transaction-input"
+            value={formData.amount}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label className="transaction-label">
+          Category:
+          <input
+            type="text"
+            name="category"
+            className="transaction-input"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label className="transaction-label">
+          Description:
+          <textarea
+            name="description"
+            className="transaction-textarea"
+            value={formData.description}
+            onChange={handleChange}
+          ></textarea>
+        </label>
+        <label className="transaction-label">
+          Date:
+          <input
+            type="date"
+            name="date"
+            className="transaction-input transaction-date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <button className="transaction-button" type="submit">
+          Add Transaction
+        </button>
+      </form>
+    </div>
   );
 };
 

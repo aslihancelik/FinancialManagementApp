@@ -8,19 +8,15 @@ import LinkCard from "./components/Account_Management/LinkCard";
 import SavedCards from "./components/Account_Management/SavedCards";
 import LinkedAccounts from "./components/Account_Management/LinkedAccounts";
 import Login from "./components/Authentication/login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
 import ErrorBoundary from "./components/ErrorBoundary";
 import BillsPage from "./Pages/BillsPage";
 import SavingsGoalsPage from "../src/Pages/SavingsGoalPage"; // Corrected path
-
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import TransactionsPage from "./pages/TransactionsPage";
 import AddTransactionPage from "./pages/AddTransactionPage";
 import EditTransactionPage from "./pages/EditTransactionPage";
 
 const App = () => {
-
-
   return (
     <AuthProvider>
       <ErrorBoundary>
@@ -86,11 +82,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<TransactionsPage />} />
-          <Route path="/add-transaction" element={<AddTransactionPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route
+            path="/add-transaction"
+            element={
+              <ProtectedRoute>
+                <AddTransactionPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/edit-transaction/:id"
-            element={<EditTransactionPage />}
+            element={
+              <ProtectedRoute>
+                <EditTransactionPage />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </ErrorBoundary>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import TransactionList from "../components/TransactionList";
 import { fetchTransactions } from "../api/transactionsApi"; // Import the function
 import "../styles/TransactionsPage.css"; // Import the updated CSS
 
@@ -28,17 +27,25 @@ const TransactionsPage = () => {
   const sortedTransactions = sortTransactionsByDate(transactions);
 
   return (
-    <div>
-      <h1>Transactions</h1>
+    <div className="transactions-page">
+      <div class="back-to-dashboard-container">
+        <button
+          class="back-to-dashboard-button"
+          onClick={() => navigate("/dashboard")}
+        >
+          🏠Home
+        </button>
+      </div>
+      <h1 class="transactions-heading">Transactions</h1>
       <button
-        className="add-transaction"
+        className="transactions-add-button"
         onClick={() => navigate("/add-transaction")}
       >
         Add Transaction
       </button>
 
-      <div className="table-container">
-        <table>
+      <div className="transactions-table-container">
+        <table className="transactions-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -59,7 +66,7 @@ const TransactionsPage = () => {
                 <td>{transaction.description}</td>
                 <td>
                   <button
-                    className="edit-button"
+                    className="transactions-edit-button"
                     onClick={() =>
                       navigate(`/edit-transaction/${transaction._id}`)
                     }

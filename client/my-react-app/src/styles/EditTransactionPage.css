@@ -1,5 +1,5 @@
-/* Center content */
-body {
+/* Center the form container */
+.edit-transaction-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,72 +10,89 @@ body {
   color: #ffffff; /* White text */
 }
 
-h1{
-    font-size: 42px;
-    text-align: center;
-    
-}
-
-/* Table styling */
-table {
-  border-collapse: collapse;
-  width: 80%;
-  margin: auto;
-  background-color: #1a1a1a; /* Dark table background */
-  color: #ffffff; /* Light text */
+/* Form container styling */
+.edit-transaction-form {
+  background-color: #1a1a1a; /* Dark background */
+  padding: 30px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 400px; /* Limit form width */
+  width: 100%; /* Responsive form */
+  display: flex;
+  flex-direction: column; /* Arrange form fields vertically */
+  align-items: center; /* Center form items horizontally */
 }
 
-/* Table header */
-th {
-  background-color: #bfb59d; /* Beige header background */
-  color: #000000; /* Black text for contrast */
-  padding: 15px;
-  text-align: center;
+/* Form labels */
+.edit-transaction-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #bfb59d; /* Beige for labels */
+  width: 100%; /* Ensure labels are aligned */
+  text-align: left; /* Align labels to the left */
 }
 
-/* Table rows and cells */
-td {
-  padding: 10px;
-  border-bottom: 1px solid #333333; /* Subtle border */
-  text-align: center;
+/* Center text within inputs and buttons */
+.edit-transaction-input,
+.edit-transaction-textarea,
+.edit-transaction-button,
+.edit-transaction-delete-button {
+  background-color: #2b2b2b; /* Input background */
+  color: #ffffff; /* Light text */
+  border: 1px solid #444444; /* Subtle border */
+  padding: 10px 0;
+  border-radius: 5px;
+  margin-bottom: 15px; /* Space between fields */
+  width: 100%; /* Full-width inputs */
+  text-align: center; /* Center the text inside inputs and textarea */
 }
 
-tr:nth-child(even) {
-  background-color: #1f1f1f; /* Slightly lighter rows for contrast */
+/* Disable the textarea (description box) */
+.edit-transaction-textarea {
+  resize: none; /* Prevent resizing */
 }
 
-/* Add transaction button */
-.add-transaction {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #bfb59d; /* Beige button */
+/* Focus styles for inputs and textareas */
+.edit-transaction-input:focus,
+.edit-transaction-textarea:focus {
+  outline: none;
+  border-color: #bfb59d; /* Highlight border on focus */
+}
+
+/* Submit button styling */
+.edit-transaction-button {
+  background-color: #ffcc00; /* Beige button */
   color: #000000; /* Black text */
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  max-width: 200px;
-}
-
-.add-transaction:hover {
-  background-color: #7e7975; /* Darker beige on hover */
-}
-
-.delete-button {
-  background-color: #d9534f; /* Red button */
-  color: #ffffff;
   border: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
   padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+  text-align: center; /* Center the button text */
 }
 
-.delete-button:hover {
-  background-color: #c9302c;
+.edit-transaction-button:hover {
+  background-color: #9c8f7b; /* Darker beige on hover */
+}
+
+/* Delete button styling */
+.edit-transaction-delete-button {
+  background-color: #c74f4f; /* Red delete button */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.edit-transaction-delete-button:hover {
+  background-color: #b13d3d; /* Darker red on hover */
+}
+
+/* Style the calendar picker */
+.edit-transaction-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon visible on the background */
 }

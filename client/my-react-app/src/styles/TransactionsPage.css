@@ -1,115 +1,125 @@
-/* Body styling */
-body {
+/* Transactions Page Styling */
+.transactions-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  /* justify-content: center; */
+  min-height: 90vh;
   background-color: #000000;
   font-family: Arial, sans-serif;
   color: #ffffff;
   margin: 0;
+  padding: 15px;
+  overflow: hidden;
 }
 
-/* Table container */
-.table-container {
-  width: 65%; /* Slightly smaller for a neater layout */
-  max-height: 75vh; /* Ensures the table fits well */
+/* Transactions Table Container */
+.transactions-table-container {
+  width: 100%; /* Expand to full width */
+  max-width: 100%; /* Ensure it fills the page */
+  max-height: 75vh;
   overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  border-radius: 8px;
+  margin: 2vh 0;
 }
 
-/* Table styling */
-table {
+.transactions-heading {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px; /* Adjust spacing below */
+}
+
+/* Transactions Table */
+.transactions-table {
   border-collapse: collapse;
-  width: 100%;
+  width: 43vw; /* Make it fill the container */
   background-color: #1a1a1a;
   color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  table-layout: fixed;
-  word-wrap: break-word; /* Prevents text overflow within table cells */
+  table-layout: auto; /* Allow columns to adjust dynamically */
 }
 
-/* Sticky header */
-thead {
+/* Sticky Header */
+.transactions-table thead {
   position: sticky;
   top: 0;
-  background-color: #bfb59d;
+  background-color:  #ffcc00;
   z-index: 10;
 }
 
-/* Header cells */
-th {
+/* Header Cells */
+.transactions-table th {
   padding: 15px;
   text-align: center;
   color: #000000;
 }
 
-/* Column width adjustments */
-th:nth-child(1), td:nth-child(1) { width: 15%; } /* Date */
-th:nth-child(2), td:nth-child(2) { width: 20%; } /* Category */
-th:nth-child(3), td:nth-child(3) { width: 15%; } /* Amount */
-th:nth-child(4), td:nth-child(4) { width: 40%; } /* Description */
-th:nth-child(5), td:nth-child(5) { width: 10%; text-align: center; } /* Edit button */
-
-/* Table rows */
-td {
-  padding: 10px;
-  border-bottom: 1px solid #333;
+/* Table Cell Styling */
+.transactions-table th,
+.transactions-table td {
+  padding: 12px;
   text-align: center;
-  word-wrap: break-word; /* Ensures that long words or URLs break onto the next line */
-  white-space: normal; /* Allows text to wrap within the cell */
-  overflow-wrap: break-word; /* Prevents words from overflowing */
+  font-size: 15px;
+  white-space: normal; /* Allows text wrapping */
+  word-break: break-word; /* Prevents text overflow */
 }
 
-/* Alternating row colors */
-tr:nth-child(even) {
+/* Alternating Row Colors */
+.transactions-table tr:nth-child(even) {
   background-color: #1f1f1f;
 }
 
-/* Edit button */
-.edit-button {
-  background: transparent;
-  border: none;
+/* Edit Button */
+.transactions-edit-button {
+  background: #ffcc00;
+  border: 1px solid #000;
   cursor: pointer;
   font-size: 18px;
-  color: #bfb59d;
-  display: inline-block; /* Keeps it on the same row */
-  vertical-align: middle;
+  font-weight: bold;
+  padding: 8px 12px;
+  color: #000000;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 
-.edit-button:hover {
-  color: #7e7975;
+.transactions-edit-button:hover {
+  background-color:  #368dc0;
+  color: #ffffff;
 }
 
-/* Scrollbar styling */
-.table-container::-webkit-scrollbar {
+/* Scrollbar Styling */
+.transactions-table-container::-webkit-scrollbar {
   width: 8px;
 }
 
-.table-container::-webkit-scrollbar-track {
+.transactions-table-container::-webkit-scrollbar-track {
   background: #222;
   border-radius: 5px;
 }
 
-.table-container::-webkit-scrollbar-thumb {
+.transactions-table-container::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 5px;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
+.transactions-table-container::-webkit-scrollbar-thumb:hover {
   background: #666;
 }
 
-/* Add transaction button */
-.add-transaction {
+/* Add Transaction Button */
+.transactions-add-button {
   display: block;
-  margin: 20px auto;
+  margin: 10px auto;
   padding: 10px 20px;
-  background-color: #bfb59d;
+  background-color: #ffcc00;
   color: #000;
   border: none;
   border-radius: 5px;
@@ -119,28 +129,70 @@ tr:nth-child(even) {
   max-width: 200px;
 }
 
-.add-transaction:hover {
+.transactions-add-button:hover {
   background-color: #7e7975;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Responsive Adjustments for Smaller Screens */
 @media screen and (max-width: 768px) {
-  .table-container {
-    width: 90%; /* Adjust the width for smaller screens */
-    max-height: 60vh; /* Adjust the table height for smaller screens */
+  .transactions-table-container {
+    width: 100%;
+    max-height: 60vh;
   }
 
-  table {
-    font-size: 14px; /* Smaller font size on small screens */
+  .transactions-table {
+    font-size: 14px;
   }
 
-  th, td {
-    padding: 8px; /* Reduced padding for better fitting */
+  .transactions-table th,
+  .transactions-table td {
+    padding: 8px;
   }
 
-  /* Ensure text doesn't overflow in small screen view */
-  td {
-    white-space: normal; /* Allow text to wrap */
-    word-wrap: break-word; /* Prevent words from overflowing */
+  .transactions-edit-button {
+    font-size: 14px;
+    padding: 6px 10px;
   }
+}
+
+.transactions-table td:nth-child(2), /* Assuming the second column is "Description" */
+.transactions-table th:nth-child(2) {
+  width: 20%; /* Adjust the percentage as needed */
+}
+
+.transactions-table td:nth-child(3), /* Assuming the second column is "Description" */
+.transactions-table th:nth-child(3) {
+  width: 15%; /* Adjust the percentage as needed */
+}
+.transactions-table td:nth-child(4), /* Assuming the second column is "Description" */
+.transactions-table th:nth-child(4) {
+  width: 30%; /* Adjust the percentage as needed */
+}
+
+.transactions-table td:nth-child(5), /* Assuming the second column is "Description" */
+.transactions-table th:nth-child(5) {
+  width: 4%; /* Adjust the percentage as needed */
+}
+
+/* Parent container to align the button */
+.back-to-dashboard-container {
+  display: flex;
+  justify-content: flex-end; /* Pushes button to the right */
+  width: 100%; /* Ensures it stretches across the width */
+  padding: 10px 20px; /* Adds some spacing */
+}
+
+.back-to-dashboard-button {
+  background-color: #bfb59d;
+  color: #000;
+  border: none;
+  padding: 10px 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 100px;
+}
+
+.back-to-dashboard-button:hover {
+  background-color: #7e7975;
 }
