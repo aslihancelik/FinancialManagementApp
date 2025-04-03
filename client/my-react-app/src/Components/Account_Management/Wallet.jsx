@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountList from "./AccountList";
 import { fetchAccounts } from "./api";
-import { Link } from "react-router-dom"; 
 
 const Wallet = () => {
   const [accounts, setAccounts] = useState([]);
@@ -16,31 +15,31 @@ const Wallet = () => {
 
     if (!token) {
       console.error("No token found, redirecting to login...");
-      navigate("/login"), 0;
+      navigate("/login"); // Navigate immediately if no token is found
       return;
     }
 
     const fetchData = async () => {
       try {
         const accounts = await fetchAccounts(token);
-        setAccounts(accounts);
+        setAccounts(accounts); // Set the accounts data into state
       } catch (error) {
         console.error("Error fetching accounts:", error);
         setError("There was an error fetching your accounts.");
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading state after fetching is complete
       }
     };
 
-    fetchData();
-  }, [navigate]);
+    fetchData(); // Call the function to fetch the data
+  }, [navigate]); // Dependency array ensures effect runs once on mount
 
   if (loading && !error) {
-    return <p>Loading your accounts...</p>;
+    return <p>Loading your accounts...</p>; // Loading state
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p>{error}</p>; // Show error message if any error occurs
   }
 
   return (
@@ -55,7 +54,7 @@ const Wallet = () => {
       {/* Display the linked accounts */}
       <div className="linked-accounts-section">
         <h2>🔗 Linked Accounts</h2>
-        <AccountList accounts={accounts} />
+        <AccountList accounts={accounts} /> {/* Pass accounts to AccountList */}
       </div>
     </div>
   );

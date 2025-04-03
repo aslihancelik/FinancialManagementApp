@@ -12,7 +12,7 @@ const SavedCards = () => {
   useEffect(() => {
     const getSavedCards = async () => {
       const token = localStorage.getItem("authToken");
-      if(!token) {
+      if (!token) {
         setError("You are not logged in.");
         setLoading(false);
         return;
@@ -45,11 +45,15 @@ const SavedCards = () => {
   if (error) {
     return <p>{error}</p>;
   }
+  const creditCards = accounts.filter(
+    (acc) => acc.type.toLowerCase() === "credit card"
+  );
+  setSavedCards(creditCards); // Each credit card should have an ID here
 
   return (
     <div className="container">
       <h1>Saved Cards</h1>
-      <AccountList accounts={savedCards} />{" "}
+      <AccountList accounts={savedCards} />
       {/*uses the accountList components */}
     </div>
   );

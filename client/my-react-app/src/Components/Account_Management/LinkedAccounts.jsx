@@ -13,6 +13,9 @@ const LinkedAccounts = () => {
   const [error, setError] = useState(null);
   const [accountType, setAccountType] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [accountId, setAccountId] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [updatedAccount, setUpdatedAccount] = useState({name:"", balance: 0});
 
   //  Axios instance with interceptor
   const apiClient = axios.create({
@@ -55,6 +58,54 @@ const LinkedAccounts = () => {
   useEffect(() => {
     getAccounts();
   }, [getAccounts]);
+
+  //fetch a single account by Id
+ const fetchAccountById = async () => {
+   if (!accountId || accountId.trim() === "" || accountId.length < 10) {
+     setError("Please enter a valid account ID.");
+     return;
+   }
+
+   try {
+     const response = await apiClient.get(`/accounts/${accountId}`);
+     if (response.data) {
+       setSelectedAccount(response.data);
+       setUpdatedAccount({
+         name: response.data.name || "",
+         balance: response.data.balance || 0,
+       });
+       setError(null);
+     } else {
+       setError("Account not found.");
+     }
+   } catch (error) {
+     console.error("Error fetching account:", error);
+     setError("Failed to fetch account. Please check if the ID is correct.");
+   }
+ };
+
+  //update an account
+  const handleUpdatedAccount = async () => {
+    if(!selectedAccount) {
+      setError("No account selected.");
+      return;
+    }
+    try {
+      await api.updatedAccount(selectedAccount._id || selectedAccount._id, {
+        name: updatedAccount.name,
+        balance: updatedAccount.balance,
+      });
+      
+      alert("Account updated successfully!");
+      setSelectedAccount(null);
+      setUpdatedAccount({name: "", balance: 0});
+      getAccounts();
+    } catch (error) {
+      console.error("Error updating account:", error);
+      setError("failed to updated account.");
+    }
+  };
+
 
   //  Handle account linking
   const handleSubmit = async (e) => {
@@ -148,8 +199,50 @@ const LinkedAccounts = () => {
             onChange={(e) => setAccountNumber(e.target.value)}
             placeholder="Enter account number"
           />
+          <button type="submit">Link Account</button>
         </div>
-        <button type="submit">Link Account</button>
+        <div>
+          <h3>Get Account by ID </h3>
+          <input
+            type="text"
+            value={accountId}
+            onChange={(e) => setAccountId(e.target.value)}
+            placeholder="Enter account ID"
+          />
+          <button onClick={fetchAccountById}>Fetch Account By Id</button>
+        </div>
+        {selectedAccount && (
+          <div>
+            <h3>Update Account</h3>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={updatedAccount.name}
+                onChange={(e) =>
+                  setUpdatedAccount({ ...updatedAccount, name: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Balance:
+              <input
+                type="number"
+                value={updatedAccount.balance}
+                onChange={(e) =>
+                  setUpdatedAccount({
+                    ...updatedAccount,
+                    balance: Number(e.target.value),
+                  })
+                }
+              />
+            </label>
+            <button type="button" onClick={handleUpdatedAccount}>
+              Update Account
+            </button>
+          </div>
+        )}
+   
       </form>
 
       {/* Navigation Links */}
